@@ -99,7 +99,7 @@ public class SFG implements ISFG {
 
         ArrayList <Arrow> forwardPathArrows = forwardPath.getForwardPath();
         ArrayList <Loop> tempLoops = new ArrayList<>();
-        ArrayList <UntouchedLoop> tempUnTouchedloops = new ArrayList<>();
+        ArrayList <UntouchedLoop> tempUnTouchedloops;
 
         for (int i = 0  ; i < loops.size() ; i++) {
             ArrayList <Arrow> loopArrows = loops.get(i).getArrows();
@@ -128,8 +128,39 @@ public class SFG implements ISFG {
     }
 
     private ArrayList <UntouchedLoop>  findUnTouchedLoops (ArrayList <Loop> localLoops) {
-        //TODO copy from Graph
-        return null;
+
+        ArrayList <UntouchedLoop> tempUnTouchedloops = new ArrayList<>();
+
+        for (int i = 0  ; i < localLoops.size() ; i++) {
+            ArrayList <Arrow> loop1Arrows = localLoops.get(i).getArrows();
+
+            for (int l = i + 1  ; l < localLoops.size() ; l++) {
+                ArrayList <Arrow> loop2Arrows = localLoops.get(i).getArrows();
+                boolean flagAdd = true;
+
+                for (int j = 0; j < loop1Arrows.size(); j++) {
+                    boolean flagBreak = false;
+
+                    for (int k = 0; k < loop2Arrows.size(); k++) {
+                        if (compareArrows(loop1Arrows.get(j), loop2Arrows.get(k))) {
+                            flagBreak = true;
+                            break;
+                        }
+                    }
+                    if (flagBreak) {
+                        flagAdd = false;
+                        break;
+                    }
+                }
+
+                if (flagAdd) {
+                    UntouchedLoop loop = new UntouchedLoop(localLoops.get(i), localLoops.get(l));
+                    tempUnTouchedloops.add(loop);
+                }
+            }
+        }
+
+        return tempUnTouchedloops;
     }
 
     private boolean compareArrows (Arrow arrow1 , Arrow arrow2) {

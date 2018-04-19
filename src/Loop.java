@@ -2,24 +2,19 @@ import java.util.ArrayList;
 
 public class Loop {
 
-    Loop (Arrow firstArrow) {
-
-        arrows.add(firstArrow);
-        gain = firstArrow.getGain();
-    }
 
     private ArrayList<Arrow> arrows = new ArrayList<>();
-    private int gain ;
+    private int gain = 1;
 
     public ArrayList<Arrow> getArrows() {
         return arrows;
     }
 
-    public void addNode(Arrow arrow){
+    public void addArrow(Arrow arrow){
         arrows.add(arrow);
     }
 
-    public void removeNode(Arrow arrow){
+    public void removeArrow(Arrow arrow){
         arrows.remove(arrow);
     }
 
@@ -30,6 +25,7 @@ public class Loop {
     }
 
     public int getGain() {
+        calculateGain();
         return gain;
     }
 }

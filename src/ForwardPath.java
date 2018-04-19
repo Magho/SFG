@@ -2,24 +2,18 @@ import java.util.ArrayList;
 
 public class ForwardPath {
 
-    ForwardPath (Arrow firstArrow) {
-
-        forwardPath.add(firstArrow);
-        gain = firstArrow.getGain();
-    }
-
     private ArrayList <Arrow> forwardPath = new ArrayList<>();
-    private int gain ;
+    private int gain = 1;
 
     public ArrayList<Arrow> getForwardPath() {
         return forwardPath;
     }
 
-    public void addNode(Arrow arrow){
+    public void addArrow(Arrow arrow){
         forwardPath.add(arrow);
     }
 
-    public void removeNode(Arrow arrow){
+    public void removeArrow(Arrow arrow){
         forwardPath.remove(arrow);
     }
 
@@ -30,6 +24,7 @@ public class ForwardPath {
     }
 
     public int getGain() {
+        calculateGain();
         return gain;
     }
 }
