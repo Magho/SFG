@@ -12,4 +12,13 @@ public class UntouchedLoop {
     public int getGain (){
         return loop1.getGain() + loop2.getGain();
     }
+
+    public Loop getLoop1() {
+        return loop1;
+    }
+
+    public Loop getLoop2() {
+        return loop2;
+    }
+
 }

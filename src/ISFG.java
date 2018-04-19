@@ -14,5 +14,5 @@ public interface ISFG {
 
     public ArrayList<UntouchedLoop> getUnTouchedLoops () throws MyException;
 
-    public int getOverAllTransferFunction () throws MyException;
+    public float getOverAllTransferFunction () throws MyException;
 }

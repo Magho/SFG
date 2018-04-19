@@ -4,24 +4,28 @@ public class Loop {
 
     Loop (Arrow firstArrow) {
 
-        loops.add(firstArrow);
+        arrows.add(firstArrow);
         gain = firstArrow.getGain();
     }
 
-    private ArrayList<Arrow> loops = new ArrayList<>();
+    private ArrayList<Arrow> arrows = new ArrayList<>();
     private int gain ;
 
+    public ArrayList<Arrow> getArrows() {
+        return arrows;
+    }
+
     public void addNode(Arrow arrow){
-        loops.add(arrow);
+        arrows.add(arrow);
     }
 
     public void removeNode(Arrow arrow){
-        loops.remove(arrow);
+        arrows.remove(arrow);
     }
 
     public void calculateGain (){
-        for (int i = 0; i < loops.size(); i++) {
-            gain = gain * loops.get(i).getGain();
+        for (int i = 0; i < arrows.size(); i++) {
+            gain = gain * arrows.get(i).getGain();
         }
     }
 

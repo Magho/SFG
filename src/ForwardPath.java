@@ -11,6 +11,10 @@ public class ForwardPath {
     private ArrayList <Arrow> forwardPath = new ArrayList<>();
     private int gain ;
 
+    public ArrayList<Arrow> getForwardPath() {
+        return forwardPath;
+    }
+
     public void addNode(Arrow arrow){
         forwardPath.add(arrow);
     }
