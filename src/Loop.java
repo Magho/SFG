@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class Loop {
 
-    Loop (Arrow fristArrow) {
+    Loop (Arrow firstArrow) {
 
-        loops.add(fristArrow);
-        gain = fristArrow.getGain();
+        loops.add(firstArrow);
+        gain = firstArrow.getGain();
     }
 
     private ArrayList<Arrow> loops = new ArrayList<>();

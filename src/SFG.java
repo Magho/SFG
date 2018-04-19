@@ -4,6 +4,9 @@ public class SFG implements ISFG {
 
     boolean finished = false;
     private Graph graph = new Graph();
+    private ArrayList <Loop> loops ;
+    private ArrayList <UntouchedLoop> untouchedLoops ;
+    private ArrayList <ForwardPath> forwardPaths ;
 
     @Override
     public void addNode(String name, String type) {
@@ -19,6 +22,12 @@ public class SFG implements ISFG {
 
     @Override
     public void finish() {
+
+        graph.finish();
+
+        this.loops = graph.getLoops();
+        this.untouchedLoops = graph.getUntouchedLoops();
+        this.forwardPaths = graph.getForwardPaths();
         this.finished = true;
     }
 
@@ -28,10 +37,8 @@ public class SFG implements ISFG {
         if (!finished) {
             //TODO not finished yet
         } else {
-
+            return forwardPaths;
         }
-
-        return null;
     }
 
     @Override
@@ -40,10 +47,9 @@ public class SFG implements ISFG {
         if (!finished) {
             //TODO not finished yet
         } else {
-
+            return loops;
         }
 
-        return null;
     }
 
     @Override
@@ -52,10 +58,8 @@ public class SFG implements ISFG {
         if (!finished) {
             //TODO not finished yet
         } else {
-
+            return untouchedLoops;
         }
-
-        return null;
     }
 
     @Override
@@ -66,14 +70,31 @@ public class SFG implements ISFG {
         } else {
 
         }
-        
+
         return 0;
     }
 
     private int  calculateGeneralDelta () {
-        return 0;
+
+        int gain = 1;
+
+        for (int i = 0 ; i < loops.size(); i++) {
+            gain = gain - loops.get(i).getGain();
+        }
+
+        for (int i = 0 ; i <untouchedLoops.size(); i++) {
+            gain = gain + untouchedLoops.get(i).getGain();
+        }
+
+        return gain;
     }
+
     private int  calculateDeltaForSpecificForwardPath () {
+
+
+        for () {
+
+        }
         return 0;
     }
 }

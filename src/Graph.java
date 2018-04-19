@@ -46,4 +46,21 @@ public class Graph {
         arrows.add(arrow);
     }
 
+    public void finish (){
+        findForwardPathes();
+        findLoops();
+        findUnTouchedLoops();
+    }
+
+    private void findForwardPathes () {
+        //TODO
+    }
+
+    private void findLoops () {
+        //TODO
+    }
+
+    private void findUnTouchedLoops () {
+        //TODO
+    }
 }

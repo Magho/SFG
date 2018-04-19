@@ -2,9 +2,10 @@ import java.util.ArrayList;
 
 public class ForwardPath {
 
-    ForwardPath (Arrow fristArrow) {
-        forwardPath.add(fristArrow);
-        gain = fristArrow.getGain();
+    ForwardPath (Arrow firstArrow) {
+
+        forwardPath.add(firstArrow);
+        gain = firstArrow.getGain();
     }
 
     private ArrayList <Arrow> forwardPath = new ArrayList<>();
