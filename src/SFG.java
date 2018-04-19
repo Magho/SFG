@@ -32,20 +32,20 @@ public class SFG implements ISFG {
     }
 
     @Override
-    public ArrayList<ForwardPath> getForwardPathes() {
+    public ArrayList<ForwardPath> getForwardPathes() throws MyException {
 
         if (!finished) {
-            //TODO not finished yet
+            throw new MyException("not finished entering info yet");
         } else {
             return forwardPaths;
         }
     }
 
     @Override
-    public ArrayList<Loop> getLoops() {
+    public ArrayList<Loop> getLoops() throws MyException {
 
         if (!finished) {
-            //TODO not finished yet
+            throw new MyException("not finished entering info yet");
         } else {
             return loops;
         }
@@ -53,22 +53,22 @@ public class SFG implements ISFG {
     }
 
     @Override
-    public ArrayList<UntouchedLoop> getUnTouchedLoops() {
+    public ArrayList<UntouchedLoop> getUnTouchedLoops() throws MyException {
 
         if (!finished) {
-            //TODO not finished yet
+            throw new MyException("not finished entering info yet");
         } else {
             return untouchedLoops;
         }
     }
 
     @Override
-    public int getOverAllTransferFunction() {
+    public int getOverAllTransferFunction() throws MyException {
 
         if (!finished) {
-            //TODO not finished yet
+            throw new MyException("not finished entering info yet");
         } else {
-
+            
         }
 
         return 0;

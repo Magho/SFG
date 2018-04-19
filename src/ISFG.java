@@ -8,11 +8,11 @@ public interface ISFG {
 
     public void finish ();
 
-    public ArrayList<ForwardPath> getForwardPathes ();
+    public ArrayList<ForwardPath> getForwardPathes () throws MyException;
 
-    public ArrayList<Loop> getLoops ();
+    public ArrayList<Loop> getLoops () throws MyException;
 
-    public ArrayList<UntouchedLoop> getUnTouchedLoops ();
+    public ArrayList<UntouchedLoop> getUnTouchedLoops () throws MyException;
 
-    public int getOverAllTransferFunction ();
+    public int getOverAllTransferFunction () throws MyException;
 }
