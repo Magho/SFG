@@ -122,8 +122,9 @@ public class Graph {
                         nodesVisited.put(sourceNode, false);
                         stackNode.pop();
                         forwardPath.removeArrow(stackArrow.pop());
-                        stackNode.pop();
+/*                        stackNode.pop();
                         forwardPath.removeArrow(stackArrow.pop());
+*/
                         sourceNode = stackNode.peek();
                         nodesVisited.put(sourceNode, true);
 
@@ -197,8 +198,9 @@ public class Graph {
                             nodesVisited.put(sourceNode, false);
                             stackNode.pop();
                             loop.removeArrow(stackArrow.pop());
-                            stackNode.pop();
+/*                            stackNode.pop();
                             loop.removeArrow(stackArrow.pop());
+*/
                             sourceNode = stackNode.peek();
                             nodesVisited.put(sourceNode,true);
 
