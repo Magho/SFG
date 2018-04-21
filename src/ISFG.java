@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public interface ISFG {
 
-    public void addNode(String name, String type) throws MyException;
+    public void addNode(String name) throws MyException;
 
     public void addArrow(Node startNode, Node endNode, int gain) throws MyException;
 

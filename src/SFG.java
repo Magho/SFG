@@ -9,9 +9,9 @@ public class SFG implements ISFG {
     private ArrayList <ForwardPath> forwardPaths ;
 
     @Override
-    public void addNode(String name, String type) throws MyException {
+    public void addNode(String name) throws MyException {
         if (!finished) {
-            Node node = new Node(name, type);
+            Node node = new Node(name);
             graph.addNode(node);
         } else
             throw new MyException("add node after finish");
@@ -128,7 +128,7 @@ public class SFG implements ISFG {
             overAllGain = calcOverAllTransferFunction();
 
         } else if (checkIfSource(denominator) && !checkIfSink(numerator)) {
-            Node node = new Node((numerator.getName() + "'"),"Sink");
+            Node node = new Node((numerator.getName() + "'"));
             graph.addNode(node);
             Arrow arrow = new Arrow(numerator, node,1);
             graph.addArrow(arrow);
@@ -144,8 +144,8 @@ public class SFG implements ISFG {
             float overAllGain1 = 0;
             float overAllGain2 = 0;
 
-            Node nodeSink = new Node ((denominator.getName() + "\'"),"Sink");
-            Node nodeSource = new Node ((denominator.getName() + "\'\'"),"Source");
+            Node nodeSink = new Node ((denominator.getName() + "\'"));
+            Node nodeSource = new Node ((denominator.getName() + "\'\'"));
             graph.addNode(nodeSink);
             graph.addNode(nodeSource);
 
@@ -179,14 +179,14 @@ public class SFG implements ISFG {
             float overAllGain2 = 0;
 
             //handel numerator
-            Node node = new Node((numerator.getName() + "'"),"Sink");
+            Node node = new Node((numerator.getName() + "'"));
             graph.addNode(node);
             Arrow arrow = new Arrow(numerator, node,1);
             graph.addArrow(arrow);
 
             //handel denominator
-            Node nodeSink = new Node ((denominator.getName() + "\'"),"Sink");
-            Node nodeSource = new Node ((denominator.getName() + "\'\'"),"Source");
+            Node nodeSink = new Node ((denominator.getName() + "\'"));
+            Node nodeSource = new Node ((denominator.getName() + "\'\'"));
             graph.addNode(nodeSink);
             graph.addNode(nodeSource);
 
