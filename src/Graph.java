@@ -7,7 +7,16 @@ public class Graph {
     private ArrayList <ForwardPath> forwardPaths = new ArrayList<>();
     private ArrayList<Loop> loops = new ArrayList<>();
     private ArrayList<UntouchedLoop> untouchedLoops = new ArrayList<>();
+    private Node sinkNode = null;
+    private Node sourceNode = null;
 
+    public void setSinkNode(Node sinkNode) {
+        this.sinkNode = sinkNode;
+    }
+
+    public void setSourceNode(Node sourceNode) {
+        this.sourceNode = sourceNode;
+    }
 
     public ArrayList<Node> getNodes() {
         return nodes;
@@ -56,12 +65,11 @@ public class Graph {
 
     public void finish () throws MyException {
 
-        findForwardPaths();
         findLoops();
         findUnTouchedLoops();
     }
 
-    private void findForwardPaths () throws MyException {
+    public void findForwardPaths () throws MyException {
 
         Node sourceNode = getSourceNode();
         Map <Node, Boolean> nodesVisited = new HashMap<>();
@@ -125,26 +133,11 @@ public class Graph {
     }
 
         private Node getSourceNode () {
-
-            Node node = null;
-
-            for (int i = 0 ; i < nodes.size() ; i ++) {
-                if (nodes.get(i).getType().compareTo("Source") == 0) {
-                    node = nodes.get(i);
-                }
-            }
-            return node;
+            return sourceNode;
         }
+
         private Node getSinkNode () {
-
-            Node node = null;
-
-            for (int i = 0 ; i < nodes.size() ; i ++) {
-                if (nodes.get(i).getType().compareTo("Sink") == 0) {
-                    node = nodes.get(i);
-                }
-            }
-            return node;
+            return sinkNode;
         }
 
     private void findLoops () throws MyException {
