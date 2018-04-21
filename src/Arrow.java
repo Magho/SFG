@@ -22,4 +22,7 @@ public class Arrow {
     public int getGain() {
         return gain;
     }
+    public void setGain(int gain) {
+        this.gain = gain;
+    }
 }
