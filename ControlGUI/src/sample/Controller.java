@@ -17,6 +17,7 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 
+import javax.swing.*;
 import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,8 @@ public class Controller {
     private StackPane stackPane;
     @FXML
     private Canvas solution;
-    private double maxHeightOfCurve = 60;
+    private double selfLoopRadius =20;
+    private double maxHeightOfCurve = 15;
     private boolean waitForAction = false;
     private ISFG backEnd;
     private Color chosenForNodes = Color.color(.212, .120, .99, .9);
@@ -110,14 +112,14 @@ public class Controller {
         Image connection = new Image(getClass().getResourceAsStream("connection.png"));
         Image node = new Image(getClass().getResourceAsStream("node.png"));
         Image solver = new Image(getClass().getResourceAsStream("solver.png"));
-        Icon inode = new Icon(node, (subCanvas.getWidth() / (2 * totalTools)) - 25, 10, 50, 50, e -> {
+        Icon inode = new Icon(node, (subCanvas.getWidth() / (2 * totalTools)) - 15, 20, 30, 30, e -> {
             eventOfiNode(e);
         });
-        Icon iconnection = new Icon(connection, (3 * subCanvas.getWidth() / (2 * totalTools)) - 25, 10, 50, 50, e -> {
+        Icon iconnection = new Icon(connection, (3 * subCanvas.getWidth() / (2 * totalTools)) - 15, 20, 30, 30, e -> {
             eventOfiConnection(e);
 
         });
-        Icon isolver = new Icon(solver, (5 * subCanvas.getWidth() / (2 * totalTools)) - 25, 10, 50, 50, e -> {
+        Icon isolver = new Icon(solver, (5 * subCanvas.getWidth() / (2 * totalTools)) - 15, 20, 30, 30, e -> {
             eventOfiSolver(e);
         });
 
@@ -127,6 +129,8 @@ public class Controller {
     }
 
     private void setIconToContext(GraphicsContext context, Icon i, String name) {
+        context.setTextAlign(TextAlignment.CENTER);
+        context.strokeText(name,i.getX()+i.getW()/2,i.getY()-5);
         context.drawImage(i.getImage(), i.getX(), i.getY(), i.getH(), i.getW());
         icons.put(name, i);
     }
@@ -309,25 +313,30 @@ public class Controller {
             GArrow gArrow = new GArrow();
 
             if (selected.get(1) == selected.get(0)) {
-                double r = 40;
+                double r = selfLoopRadius;
                 midX = selected.get(0).getX();
                 midY = selected.get(0).getY() - 2 * r - 10;
                 gArrow.setMidx(selected.get(0).getX());
                 gArrow.setMidy(selected.get(0).getY() - 2 * r);
+                gArrow.setFirst(selected.get(0));
+                gArrow.setSecond(selected.get(1));
+                gArrow.setCurveHeight(0);
                 mainCanvas.getGraphicsContext2D().strokeArc(selected.get(0).getX() - r, selected.get(0).getY() - 2 * r, 2 * r, 2 * r, 0, 360, ArcType.OPEN);
-                drawArrow(gArrow, gArrow.getMidx() + 10, gArrow.getMidy(), mainCanvas.getGraphicsContext2D());
+                drawArrow(gArrow, gArrow.getMidx() + 10, gArrow.getMidy()+10, mainCanvas.getGraphicsContext2D());
             } else {
                 midX = selected.get(0).getX() + ((selected.get(1).getX() - selected.get(0).getX()) / 2);
                 midY = selected.get(0).getY() + ((selected.get(1).getY() - selected.get(0).getY()) / 2);
 
                 boolean isCurve = false;
-                if (selected.get(0).getX() > selected.get(1).getX()) {
-                    isCurve = true;
-                }
+                isCurve=checkIfCurve();
+
                 if (!isCurve) {
                     mainCanvas.getGraphicsContext2D().strokeLine(selected.get(0).getX(), selected.get(0).getY(), selected.get(1).getX(), selected.get(1).getY());
                     gArrow.setMidx(midX);
                     gArrow.setMidy(midY);
+                    gArrow.setFirst(selected.get(0));
+                    gArrow.setSecond(selected.get(1));
+                    gArrow.setCurveHeight(0);
                     drawArrow(gArrow, selected.get(1).getX(), selected.get(1).getY(), mainCanvas.getGraphicsContext2D());
 
                 } else {
@@ -335,7 +344,9 @@ public class Controller {
 
                     gArrow.setMidx(arr.getX());
                     gArrow.setMidy(arr.getY());
-
+                    gArrow.setFirst(selected.get(0));
+                    gArrow.setSecond(selected.get(1));
+                    gArrow.setCurveHeight((float) maxHeightOfCurve);
                     drawArrow(gArrow, selected.get(1).getX(), selected.get(1).getY(), mainCanvas.getGraphicsContext2D());
 
                 }
@@ -371,6 +382,38 @@ public class Controller {
         }
     }
 
+    private boolean checkIfCurve() {
+        int counter=0;
+
+        for(int i=0;i<gNodes.size();i++){
+            double xi,xs1,xs2;
+            xi=gNodes.get(i).getX();
+            xs1=selected.get(0).getX();
+            xs2=selected.get(1).getX();
+            if((xi>xs1&&xi<xs2)||(xi<xs1&&xi>xs2)){
+                counter++;
+            }
+
+        }
+        for(int i=0;i<arrows.size();i++){
+            if(arrows.get(i).getFirst()==selected.get(1)&&arrows.get(i).getSecond()==selected.get(0)){
+                maxHeightOfCurve=arrows.get(i).getCurveHeight()+counter*10+10;
+                if(selected.get(0).getX()>selected.get(1).getX()){
+                    maxHeightOfCurve+=20;
+                }
+                return true;
+            }
+        }
+        if(counter>0){
+            maxHeightOfCurve = counter*25;
+            if(selected.get(0).getX()>selected.get(1).getX()){
+                maxHeightOfCurve+=20;
+            }
+            return true;
+        }
+        return false;
+    }
+
     private boolean validGain(String text) {
         try {
             Integer.valueOf(text);
@@ -387,30 +430,36 @@ public class Controller {
         double dy = gArrow.getMidy() - diry;
         double dx = gArrow.getMidx() - dirx;
         double theta;
-        theta = Math.atan(Math.abs(dy) / Math.abs(dx));
-        theta = Math.toDegrees(theta);
 
-        if (dy < 0 && dx < 0) {
-            theta = 180 - theta;
+            theta = Math.atan(Math.abs(dy) / Math.abs(dx));
+            theta = Math.toDegrees(theta);
 
-        } else if (dx > 0 && dy > 0) {
-            theta = 360 - theta;
+            if (dy < 0 && dx < 0) {
+                theta = 180 - theta;
 
-        } else if (dy < 0 && dx > 0) {
-            theta = theta;
+            } else if (dx > 0 && dy > 0) {
+                theta = 360 - theta;
 
-        } else if (dx < 0 && dy > 0) {
-            theta = 180 + theta;
+            } else if (dy < 0 && dx > 0) {
+                theta = theta;
 
-        } else if (dx == 0) {
-            theta = (dy > 0 ? 270 : 90);
-        } else if (dy == 0) {
+            } else if (dx < 0 && dy > 0) {
+                theta = 180 + theta;
+
+            }
+         dy = gArrow.getFirst().getY() - diry;
+         dx = gArrow.getFirst().getX() - dirx;
+            if (dx == 0) {
+                theta = (dy > 0 ? 270 : 90);
+            }else
+        if (dy == 0) {
             theta = (dx > 0 ? 0 : 180);
         }
         gArrow.setSlope(theta);
-        System.out.println(theta + " ");
+        System.out.println(theta + "  ee");
+
         gc.setFill(chosenForText);
-        gc.fillArc(gArrow.getMidx() - 20, gArrow.getMidy() - 20, 40, 40, theta - 20, 40, ArcType.ROUND);
+        gc.fillArc(gArrow.getMidx() - 10, gArrow.getMidy() - 10, 20, 20, theta - 20, 40, ArcType.ROUND);
     }
 
     private PosXY drawCurve(double x1, double y1, double x2, double y2, double xm, double ym, GraphicsContext context) {
@@ -442,14 +491,21 @@ public class Controller {
             cY = ym + (r - maxHeightOfCurve) * Math.sin(Math.toRadians(slope2));
             cX = xm - (r - maxHeightOfCurve) * Math.cos(Math.toRadians(slope2));
         }
+
         System.out.println(cX + " - - ----  -- " + cY);
         double ss = slope + Math.toDegrees(Math.atan(Math.abs(r - maxHeightOfCurve) / (lineLen / 2)));
         context.strokeArc(cX - r, cY - r, 2 * r, 2 * r, ss, 2 * (90 - ss + slope), ArcType.OPEN);
+
         double arrX, arrY, term, dD;
+        if(slope2==90){
+            return new PosXY(xm,ym-maxHeightOfCurve)
+           ;
+        }
         term = 2 * (-ym + cY);
         dD = (cY - ym) / (cX - xm);
         arrX = (-cX * cX + xm * xm - cY * cY + ym * ym - term * dD * cX + term * cY - maxHeightOfCurve * maxHeightOfCurve + r * r) / (2 * (-cX + xm) - term * dD);
         arrY = dD * (arrX - cX) + cY;
+
         maxHeightOfCurve = maxtemp;
         return new PosXY(arrX, arrY);
     }

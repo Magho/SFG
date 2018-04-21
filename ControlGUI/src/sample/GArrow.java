@@ -11,9 +11,34 @@ public class GArrow {
     private double slope;
     private double midx;
     private double midy;
-
+    private float CurveHeight;
+    private GNode first,second;
     public GArrow() {
 
+    }
+
+    public GNode getFirst() {
+        return first;
+    }
+
+    public void setFirst(GNode first) {
+        this.first = first;
+    }
+
+    public GNode getSecond() {
+        return second;
+    }
+
+    public void setSecond(GNode second) {
+        this.second = second;
+    }
+
+    public float getCurveHeight() {
+        return CurveHeight;
+    }
+
+    public void setCurveHeight(float curveHeight) {
+        CurveHeight = curveHeight;
     }
 
     public GArrow(Arrow arrow, double slope, double midx, double midy) {

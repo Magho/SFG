@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TextField?>
-<BorderPane fx:controller="sample.Controller"
+<BorderPane
             xmlns:fx="http://javafx.com/fxml"
             prefHeight="500" prefWidth="600"
 >
-
+    <!--fx:controller="sample.Controller"-->
     <StackPane fx:id="stackPane"   prefWidth="600" prefHeight="500">
         <Canvas fx:id="mainCanvas" translateX="300" translateY="250" width="600" height="500" />
         <Canvas fx:id="subCanvas" translateX="300" translateY="30" height="60" width="600"  />
