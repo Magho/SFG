@@ -24,6 +24,9 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class Controller {
+    public Controller(){
+
+    }
     @FXML
     private Canvas mainCanvas;
     @FXML
@@ -179,7 +182,8 @@ public class Controller {
             }
         }
         if (selected.size() == 2) {
-            showSolution();
+            //TODO try {
+                showSolution();
 
             for (int i = 0; i < selected.size(); i++) {
                 selected.get(i).setColor(chosenForNodes);
@@ -225,8 +229,8 @@ public class Controller {
             ArrayList<Arrow> arrows = forwardPaths.get(i).getArrows();
             StringBuilder path = new StringBuilder();
             for (int j = 0; j < arrows.size(); j++) {
-                System.out.print(arrows.get(i).getStartNode().getName()+"->");
-                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->"+arrows.get(j).getEndNode().getName()) : "->"));
+                System.out.print(arrows.get(i).getStartNode().getName() + "->");
+                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
 
             }
             System.out.println();
@@ -236,53 +240,57 @@ public class Controller {
 
 
     }
-private void printLoops(ArrayList<Loop> loops){
 
-    solution.getGraphicsContext2D().strokeText("Loops", solution.getWidth() / 2, 200);
-    for (int i = 0; i < loops.size(); i++) {
-        ArrayList<Arrow> arrows = loops.get(i).getArrows();
-        StringBuilder path = new StringBuilder();
-        for (int j = 0; j < arrows.size(); j++) {
-            System.out.print(arrows.get(j).getStartNode().getName()+"->");
-            path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->"+arrows.get(j).getEndNode().getName()) : "->"));
+    private void printLoops(ArrayList<Loop> loops) {
+
+        solution.getGraphicsContext2D().strokeText("Loops", solution.getWidth() / 2, 200);
+        for (int i = 0; i < loops.size(); i++) {
+            ArrayList<Arrow> arrows = loops.get(i).getArrows();
+            StringBuilder path = new StringBuilder();
+            for (int j = 0; j < arrows.size(); j++) {
+                System.out.print(arrows.get(j).getStartNode().getName() + "->");
+                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
+            }
+            solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 220 + i * 150 / loops.size());
+            System.out.println();
         }
-        solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 220 + i * 150 / loops.size());
-        System.out.println();
-    }
-
-}
-private void printUnTouchedLoops(ArrayList<UntouchedLoop> untouchedLoops){
-
-    solution.getGraphicsContext2D().strokeText("UnTouched loops", solution.getWidth() / 2, 370);
-    for (int i = 0; i < untouchedLoops.size(); i++) {
-        Loop l1 = untouchedLoops.get(i).getLoop1();
-        ArrayList<Arrow> arrows = l1.getArrows();
-        StringBuilder path = new StringBuilder();
-        for (int j = 0; j < arrows.size(); j++) {
-            path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->"+arrows.get(j).getEndNode().getName()) : "->"));
-        }
-        path.append("||");
-        solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 380 + (i / 2) * 100 / untouchedLoops.size());
-
-        Loop l2 = untouchedLoops.get(i).getLoop2();
-        arrows = l2.getArrows();
-        path = new StringBuilder();
-
-        for (int j = 0; j < arrows.size(); j++) {
-            path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->"+arrows.get(j).getEndNode().getName()) : "->"));
-        }
-        path.append("\n---------------------");
-        solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 380 + (i / 2) * 100 / untouchedLoops.size());
 
     }
 
-}
-private void printTF(float tf){
-    solution.getGraphicsContext2D().strokeText("OverAll T.F", solution.getWidth() / 2, 490);
-    solution.getGraphicsContext2D().strokeText(String.valueOf(tf), solution.getWidth() / 2, 400);
-    System.out.println(tf);
+    private void printUnTouchedLoops(ArrayList<UntouchedLoop> untouchedLoops) {
 
-}
+        solution.getGraphicsContext2D().strokeText("UnTouched loops", solution.getWidth() / 2, 370);
+        for (int i = 0; i < untouchedLoops.size(); i++) {
+            Loop l1 = untouchedLoops.get(i).getLoop1();
+            ArrayList<Arrow> arrows = l1.getArrows();
+            StringBuilder path = new StringBuilder();
+            for (int j = 0; j < arrows.size(); j++) {
+                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
+            }
+            path.append("||");
+            solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 380 + (i / 2) * 100 / untouchedLoops.size());
+
+            Loop l2 = untouchedLoops.get(i).getLoop2();
+            arrows = l2.getArrows();
+            path = new StringBuilder();
+
+            for (int j = 0; j < arrows.size(); j++) {
+                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
+            }
+            path.append("\n---------------------");
+            solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 380 + (i / 2) * 100 / untouchedLoops.size());
+
+        }
+
+    }
+
+    private void printTF(float tf) {
+        solution.getGraphicsContext2D().strokeText("OverAll T.F", solution.getWidth() / 2, 490);
+        solution.getGraphicsContext2D().strokeText(String.valueOf(tf), solution.getWidth() / 2, 400);
+        System.out.println(tf);
+
+    }
+
     private void eventOfiConnection(MouseEvent e) {
         if ((waitForAction && selected.size() == 0) || selected.size() == 2) {
             return;
