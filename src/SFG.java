@@ -9,15 +9,21 @@ public class SFG implements ISFG {
     private ArrayList <ForwardPath> forwardPaths ;
 
     @Override
-    public void addNode(String name, String type) {
-        Node node = new Node(name, type);
-        graph.addNode(node);
+    public void addNode(String name, String type) throws MyException {
+        if (!finished) {
+            Node node = new Node(name, type);
+            graph.addNode(node);
+        } else
+            throw new MyException("add node after finish");
     }
 
     @Override
-    public void addArrow(Node startNode, Node endNode, int gain) {
-        Arrow arrow = new Arrow(startNode, endNode, gain);
-        graph.addArrow(arrow);
+    public void addArrow(Node startNode, Node endNode, int gain) throws MyException {
+        if (!finished) {
+            Arrow arrow = new Arrow(startNode, endNode, gain);
+            graph.addArrow(arrow);
+        } else
+            throw new MyException("add arrow after finish");
     }
 
     @Override
@@ -32,7 +38,7 @@ public class SFG implements ISFG {
     }
 
     @Override
-    public ArrayList<ForwardPath> getForwardPathes() throws MyException {
+    public ArrayList<ForwardPath> getForwardPaths() throws MyException {
 
         if (!finished) {
             throw new MyException("not finished entering info yet");
@@ -49,7 +55,6 @@ public class SFG implements ISFG {
         } else {
             return loops;
         }
-
     }
 
     @Override
@@ -80,69 +85,34 @@ public class SFG implements ISFG {
         return overAllGain;
     }
 
-    private float  calculateGeneralDelta (ArrayList<Loop> localLoops, ArrayList <UntouchedLoop> localUnTouchedLoops) {
+        private float  calculateGeneralDelta (ArrayList<Loop> localLoops, ArrayList <UntouchedLoop> localUnTouchedLoops) {
 
-        float gain = 1;
+            float gain = 1;
 
-        for (int i = 0 ; i < localLoops.size(); i++) {
-            gain = gain - localLoops.get(i).getGain();
-        }
-
-        for (int i = 0 ; i < localUnTouchedLoops.size(); i++) {
-            gain = gain + localUnTouchedLoops.get(i).getGain();
-        }
-
-        return gain;
-    }
-
-    private float  calculateDeltaForSpecificForwardPath (ForwardPath forwardPath) {
-
-        ArrayList <Arrow> forwardPathArrows = forwardPath.getForwardPath();
-        ArrayList <Loop> tempLoops = new ArrayList<>();
-        ArrayList <UntouchedLoop> tempUnTouchedloops;
-
-        for (int i = 0  ; i < loops.size() ; i++) {
-            ArrayList <Arrow> loopArrows = loops.get(i).getArrows();
-            boolean flagAdd = true;
-            for (int j = 0 ; j < loopArrows.size() ; j++) {
-                boolean flagbreak = false;
-                for (int k = 0; k < forwardPathArrows.size(); k++) {
-                    if (compareArrows(loopArrows.get(j),forwardPathArrows.get(k))) {
-                        flagbreak = true;
-                        break;
-                    }
-                }
-                if (flagbreak) {
-                    flagAdd = false;
-                    break;
-                }
+            for (int i = 0 ; i < localLoops.size(); i++) {
+                gain = gain - localLoops.get(i).getGain();
             }
 
-            if (flagAdd)
-                tempLoops.add(loops.get(i));
+            for (int i = 0 ; i < localUnTouchedLoops.size(); i++) {
+                gain = gain + localUnTouchedLoops.get(i).getGain();
+            }
+
+            return gain;
         }
 
-        tempUnTouchedloops = findUnTouchedLoops(tempLoops);
-        return calculateGeneralDelta(tempLoops,tempUnTouchedloops);
+        private float  calculateDeltaForSpecificForwardPath (ForwardPath forwardPath) {
 
-    }
+            ArrayList <Arrow> forwardPathArrows = forwardPath.getArrows();
+            ArrayList <Loop> tempLoops = new ArrayList<>();
+            ArrayList <UntouchedLoop> tempUnTouchedLoops;
 
-    private ArrayList <UntouchedLoop>  findUnTouchedLoops (ArrayList <Loop> localLoops) {
-
-        ArrayList <UntouchedLoop> tempUnTouchedloops = new ArrayList<>();
-
-        for (int i = 0  ; i < localLoops.size() ; i++) {
-            ArrayList <Arrow> loop1Arrows = localLoops.get(i).getArrows();
-
-            for (int l = i + 1  ; l < localLoops.size() ; l++) {
-                ArrayList <Arrow> loop2Arrows = localLoops.get(i).getArrows();
+            for (int i = 0  ; i < loops.size() ; i++) {
+                ArrayList <Arrow> loopArrows = loops.get(i).getArrows();
                 boolean flagAdd = true;
-
-                for (int j = 0; j < loop1Arrows.size(); j++) {
+                for (int j = 0 ; j < loopArrows.size() ; j++) {
                     boolean flagBreak = false;
-
-                    for (int k = 0; k < loop2Arrows.size(); k++) {
-                        if (compareArrows(loop1Arrows.get(j), loop2Arrows.get(k))) {
+                    for (int k = 0; k < forwardPathArrows.size(); k++) {
+                        if (compareArrows(loopArrows.get(j),forwardPathArrows.get(k))) {
                             flagBreak = true;
                             break;
                         }
@@ -153,14 +123,49 @@ public class SFG implements ISFG {
                     }
                 }
 
-                if (flagAdd) {
-                    UntouchedLoop loop = new UntouchedLoop(localLoops.get(i), localLoops.get(l));
-                    tempUnTouchedloops.add(loop);
-                }
+                if (flagAdd)
+                    tempLoops.add(loops.get(i));
             }
+
+            tempUnTouchedLoops = findUnTouchedLoops(tempLoops);
+            return calculateGeneralDelta(tempLoops, tempUnTouchedLoops);
+
         }
 
-        return tempUnTouchedloops;
+        private ArrayList <UntouchedLoop>  findUnTouchedLoops (ArrayList <Loop> localLoops) {
+
+            ArrayList <UntouchedLoop> tempUnTouchedLoops = new ArrayList<>();
+
+            for (int i = 0  ; i < localLoops.size() ; i++) {
+                ArrayList <Arrow> loop1Arrows = localLoops.get(i).getArrows();
+
+                for (int l = i + 1  ; l < localLoops.size() ; l++) {
+                    ArrayList <Arrow> loop2Arrows = localLoops.get(i).getArrows();
+                    boolean flagAdd = true;
+
+                    for (int j = 0; j < loop1Arrows.size(); j++) {
+                        boolean flagBreak = false;
+
+                        for (int k = 0; k < loop2Arrows.size(); k++) {
+                            if (compareArrows(loop1Arrows.get(j), loop2Arrows.get(k))) {
+                                flagBreak = true;
+                                break;
+                            }
+                        }
+                        if (flagBreak) {
+                            flagAdd = false;
+                            break;
+                        }
+                    }
+
+                    if (flagAdd) {
+                        UntouchedLoop loop = new UntouchedLoop(localLoops.get(i), localLoops.get(l));
+                        tempUnTouchedLoops.add(loop);
+                    }
+                }
+            }
+
+        return tempUnTouchedLoops;
     }
 
     private boolean compareArrows (Arrow arrow1 , Arrow arrow2) {

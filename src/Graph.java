@@ -29,21 +29,28 @@ public class Graph {
         return untouchedLoops;
     }
 
-    public void addNode (Node node) {
-        nodes.add(node);
+    public void addNode (Node node) throws MyException {
+
+        if (!nodes.contains(node)) {
+            nodes.add(node);
+        } else
+            throw new MyException("add repeated node");
     }
 
-    public void addArrow (Arrow arrow) {
-        arrows.add(arrow);
+    public void addArrow (Arrow arrow) throws MyException {
+        if (!arrows.contains(arrow)) {
+            arrows.add(arrow);
+        } else
+            throw new MyException("add repeated arrow");
     }
 
-    public void finish (){
+    public void finish () throws MyException {
         findForwardPaths();
         findLoops();
         findUnTouchedLoops();
     }
 
-    private void findForwardPaths () {
+    private void findForwardPaths () throws MyException {
 
         Node sourceNode = getSourceNode();
         Map <Node, Boolean> nodesVisited = new HashMap<>();
@@ -64,7 +71,7 @@ public class Graph {
                 Node endNode = arrows.get(i).getEndNode();
 
                 if (compareArrowStartNodeWithNode(arrows.get(i),sourceNode) &&
-                        nodesVisited.get(endNode) &&
+                        !nodesVisited.get(endNode) &&
                         !compareTwoNodes(sourceNode, endNode)) {
 
                     nodesVisited.put(endNode,true);
@@ -106,34 +113,35 @@ public class Graph {
         }
     }
 
-    private Node getSourceNode () {
+        private Node getSourceNode () {
 
-        Node node = null;
+            Node node = null;
 
-        for (int i = 0 ; i < nodes.size() ; i ++) {
-            if (nodes.get(i).getType().compareTo("Source") == 0) {
-                node = nodes.get(i);
+            for (int i = 0 ; i < nodes.size() ; i ++) {
+                if (nodes.get(i).getType().compareTo("Source") == 0) {
+                    node = nodes.get(i);
+                }
             }
+            return node;
         }
-        return node;
-    }
+        private Node getSinkNode () {
 
-    private Node getSinkNode () {
+            Node node = null;
 
-        Node node = null;
-
-        for (int i = 0 ; i < nodes.size() ; i ++) {
-            if (nodes.get(i).getType().compareTo("Sink") == 0) {
-                node = nodes.get(i);
+            for (int i = 0 ; i < nodes.size() ; i ++) {
+                if (nodes.get(i).getType().compareTo("Sink") == 0) {
+                    node = nodes.get(i);
+                }
             }
+            return node;
         }
-        return node;
-    }
 
-    //TODO revise
-    private void findLoops () {
+    private void findLoops () throws MyException {
+
+        findSelfLoops();
 
         for (int j = 0 ; j < nodes.size() ; j++ ) {
+
             Node sourceNode = nodes.get(j);
             Map<Node, Boolean> nodesVisited = new HashMap<>();
 
@@ -147,34 +155,77 @@ public class Graph {
             Loop loop = new Loop();
 
             while (!stackNode.empty()) {
-                for (int i = 0; i < arrows.size(); i++) {
+
+                for (int i = 0 ; i < arrows.size() ; i++) {
+
                     Node endNode = arrows.get(i).getEndNode();
-                    Node currentNode;
-                    Arrow currentArrow = stackArrow.peek();
 
-                    if (compareArrowStartNodeWithNode(arrows.get(i), sourceNode) && nodesVisited.get(endNode)) {
+                    if (compareArrowStartNodeWithNode(arrows.get(i),sourceNode) &&
+                            !nodesVisited.get(endNode) &&
+                            !compareTwoNodes(sourceNode, endNode)) {
 
-                        nodesVisited.put(endNode, true);
+                        nodesVisited.put(endNode,true);
                         stackNode.add(endNode);
                         stackArrow.add(arrows.get(i));
-                        currentNode = stackNode.peek();
-                        loop.addArrow(currentArrow);
+                        loop.addArrow(arrows.get(i));
+                        sourceNode = stackNode.peek();
+                        nodesVisited.put(sourceNode,true);
 
-                        if (compareTwoNodes(currentNode, nodes.get(j))) {
-                            loops.add(loop);
-                            loop.removeArrow(currentArrow);
+                        if (compareTwoNodes(sourceNode, nodes.get(j))) {
+
+                            Loop real = new Loop(loop);
+                            loops.add(real);
+                            nodesVisited.put(sourceNode, false);
+                            stackNode.pop();
+                            loop.removeArrow(stackArrow.pop());
+                            stackNode.pop();
+                            loop.removeArrow(stackArrow.pop());
+                            sourceNode = stackNode.peek();
+                            nodesVisited.put(sourceNode,true);
+
+                        } else {
+                            i = 0;
                         }
+
                     } else {
-
-                        loop.removeArrow(currentArrow);
-
+                        //just case node was visited before and all other conditions satisfied
+                        if (!compareTwoNodes(sourceNode, endNode) &&
+                                compareArrowStartNodeWithNode(arrows.get(i),sourceNode)) {
+                            nodesVisited.put(endNode, false);
+                        }
                     }
-                    currentNode = stackNode.pop();
-                    stackArrow.pop();
-                    sourceNode = currentNode;
                 }
+
+                stackNode.pop();
+                loop.removeArrow(stackArrow.pop());
+                sourceNode = stackNode.peek();
+                nodesVisited.put(sourceNode,true);
             }
         }
+
+
+    }
+
+        private void findSelfLoops() throws MyException {
+        for (int i = 0 ; i < arrows.size() ; i++) {
+            if (compareTwoNodes(arrows.get(i).getStartNode(), arrows.get(i).getEndNode())) {
+                Loop real = new Loop();
+                real.addArrow(arrows.get(i));
+                loops.add(real);
+            }
+        }
+    }
+        private boolean compareArrowStartNodeWithNode (Arrow arrow1 , Node node) {
+        if (arrow1.getStartNode().getName().compareTo(node.getName()) == 0)
+            return true;
+        else
+            return false;
+    }
+        private boolean compareTwoNodes (Node node1 , Node node2) {
+        if (node1.getName().compareTo(node2.getName()) == 0)
+            return true;
+        else
+            return false;
     }
 
     private void findUnTouchedLoops () {
@@ -208,22 +259,8 @@ public class Graph {
             }
         }
     }
-
-    private boolean compareArrowsStartNodes (Arrow arrow1 , Arrow arrow2) {
+        private boolean compareArrowsStartNodes (Arrow arrow1 , Arrow arrow2) {
         if (arrow1.getStartNode().getName().compareTo(arrow2.getStartNode().getName()) == 0)
-            return true;
-        else
-            return false;
-    }
-
-    private boolean compareArrowStartNodeWithNode (Arrow arrow1 , Node node) {
-        if (arrow1.getStartNode().getName().compareTo(node.getName()) == 0)
-            return true;
-        else
-            return false;
-    }
-    private boolean compareTwoNodes (Node node1 , Node node2) {
-        if (node1.getName().compareTo(node2.getName()) == 0)
             return true;
         else
             return false;

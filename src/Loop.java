@@ -2,6 +2,15 @@ import java.util.ArrayList;
 
 public class Loop {
 
+    Loop (){
+
+    }
+
+    Loop (Loop loop) throws MyException {
+        for (int i = 0 ; i < loop.getArrows().size() ; i++) {
+            this.addArrow(loop.getArrows().get(i));
+        }
+    }
 
     private ArrayList<Arrow> arrows = new ArrayList<>();
     private int gain = 1;
@@ -10,14 +19,20 @@ public class Loop {
         return arrows;
     }
 
-    public void addArrow(Arrow arrow){
-        arrows.add(arrow);
+    public void addArrow(Arrow arrow) throws MyException {
+        if (!arrows.contains(arrow)) {
+            arrows.add(arrow);
+        } else
+            throw new MyException("add repeated arrow into loop");
     }
 
-    public void removeArrow(Arrow arrow){
-        arrows.remove(arrow);
-    }
+    public void removeArrow(Arrow arrow) throws MyException {
+        if (arrows.contains(arrow)) {
+            arrows.remove(arrow);
+        } else
+            throw new MyException("remove unexcited arrow from loop");
 
+    }
     public void calculateGain (){
         for (int i = 0; i < arrows.size(); i++) {
             gain = gain * arrows.get(i).getGain();
