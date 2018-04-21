@@ -72,18 +72,22 @@ public class SFG implements ISFG {
             return false;
     }
 
-/*    @Override
-    public ArrayList<ForwardPath> getForwardPaths(Node numerator, Node Denominator) throws MyException {
+    @Override
+    public ArrayList<ForwardPath> getForwardPaths(Node sinkNode, Node sourceNode) throws MyException {
 
         if (!finished) {
             throw new MyException("not finished entering info yet");
+        } else if (!checkIfSink(sinkNode) | !checkIfSource(sourceNode)) {
+            throw new MyException("can't find forward path between non sink and non source node");
         } else {
-            graph.findForwardPaths(numerator, Denominator);
+
+            graph.setSinkNode(sinkNode);
+            graph.setSourceNode(sourceNode);
+            graph.findForwardPaths();
             forwardPaths = graph.getForwardPaths();
             return forwardPaths;
         }
     }
-*/
 
     @Override
     public ArrayList<Loop> getLoops() throws MyException {
@@ -117,7 +121,7 @@ public class SFG implements ISFG {
 
     private float decideTheCaseOfTheTF (Node numerator, Node denominator) throws MyException {
 
-        float overAllGain = 0;
+        float overAllGain ;
 
         if (checkIfSource(denominator) && checkIfSink(numerator)) {
             graph.setSinkNode(numerator);

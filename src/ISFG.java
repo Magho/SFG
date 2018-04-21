@@ -8,9 +8,7 @@ public interface ISFG {
 
     public void finish () throws MyException;
 
-/*
-    public ArrayList<ForwardPath> getForwardPaths (Node numerator, Node Denominator) throws MyException;
-*/
+    public ArrayList<ForwardPath> getForwardPaths (Node sinkNode, Node sourceNode) throws MyException;
 
     public ArrayList<Loop> getLoops () throws MyException;
 
