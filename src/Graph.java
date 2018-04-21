@@ -58,6 +58,21 @@ public class Graph {
         }
     }
 
+    public void removeNode (Node node) throws MyException {
+        if (!nodes.contains(node)) {
+            throw new MyException("add repeated node");
+        } else {
+            nodes.remove(node);
+        }
+    }
+
+    public void removeArrow (Arrow arrow) throws MyException {
+        if (!arrows.contains(arrow)) {
+            throw new MyException("remove unInserted arrow");
+        } else {
+            arrows.remove(arrow);
+        }
+    }
         private boolean compareArrows (Arrow arrow1, Arrow arrow2) {
             return compareTwoNodes(arrow1.getStartNode(),arrow2.getStartNode()) &&
                     compareTwoNodes(arrow1.getEndNode(), arrow2.getEndNode());

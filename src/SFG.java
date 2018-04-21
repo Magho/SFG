@@ -128,6 +128,8 @@ public class SFG implements ISFG {
             overAllGain = calcOverAllTransferFunction();
 
         } else if (checkIfSource(denominator) && !checkIfSink(numerator)) {
+
+            //handel numerator
             Node node = new Node((numerator.getName() + "'"));
             graph.addNode(node);
             Arrow arrow = new Arrow(numerator, node,1);
@@ -135,15 +137,21 @@ public class SFG implements ISFG {
             graph.setSinkNode(node);
             graph.setSourceNode(denominator);
 
+            //calculate T.F
             graph.findForwardPaths();
             forwardPaths = graph.getForwardPaths();
             overAllGain = calcOverAllTransferFunction();
+
+            //reset the graph
+            graph.removeArrow(arrow);
+            graph.removeNode(node);
 
         } else if (!checkIfSource(denominator) && checkIfSink(numerator)) {
 
             float overAllGain1 = 0;
             float overAllGain2 = 0;
 
+            //handel denominator
             Node nodeSink = new Node ((denominator.getName() + "\'"));
             Node nodeSource = new Node ((denominator.getName() + "\'\'"));
             graph.addNode(nodeSink);
@@ -157,7 +165,7 @@ public class SFG implements ISFG {
             graph.setSinkNode(numerator);
             graph.setSourceNode(nodeSource);
 
-            //TODO calc T.F1 Gain
+            //calc T.F1
             graph.findForwardPaths();
             forwardPaths = graph.getForwardPaths();
             overAllGain1 = calcOverAllTransferFunction();
@@ -165,13 +173,19 @@ public class SFG implements ISFG {
             graph.setSinkNode(nodeSink);
             graph.setSourceNode(nodeSource);
 
-            //TODO calc T.F2 Gain
+            //calc T.F2
             graph.findForwardPaths();
             forwardPaths = graph.getForwardPaths();
             overAllGain2 = calcOverAllTransferFunction();
 
-            //TODO over all gain equal T.F1 Gain / T.F2 Gain
+            //calc over all gain equal T.F1  / T.F2
             overAllGain = overAllGain1 / overAllGain2;
+
+            //reset graph
+            graph.removeNode(nodeSink);
+            graph.removeNode(nodeSource);
+            graph.removeArrow(arrowSink);
+            graph.removeArrow(arrowSource);
 
         } else {
 
@@ -198,7 +212,7 @@ public class SFG implements ISFG {
             graph.setSinkNode(node);
             graph.setSourceNode(nodeSource);
 
-            //TODO calc T.F1 Gain
+            //calc T.F1
             graph.findForwardPaths();
             forwardPaths = graph.getForwardPaths();
             overAllGain1 = calcOverAllTransferFunction();
@@ -206,13 +220,21 @@ public class SFG implements ISFG {
             graph.setSinkNode(nodeSink);
             graph.setSourceNode(nodeSource);
 
-            //TODO calc T.F2 Gain
+            //calc T.F2
             graph.findForwardPaths();
             forwardPaths = graph.getForwardPaths();
             overAllGain2 = calcOverAllTransferFunction();
 
-            //TODO over all gain equal T.F1 Gain / T.F2 Gain
+            //over all gain equal T.F1 / T.F2
             overAllGain = overAllGain1 / overAllGain2;
+
+            //reset graph
+            graph.removeNode(nodeSink);
+            graph.removeNode(nodeSource);
+            graph.removeArrow(arrowSink);
+            graph.removeArrow(arrowSource);
+            graph.removeArrow(arrow);
+            graph.removeNode(node);
         }
         return overAllGain;
     }
