@@ -6,7 +6,7 @@ public interface ISFG {
 
     public void addArrow(Node startNode, Node endNode, int gain) throws MyException;
 
-    public void finish ();
+    public void finish () throws MyException;
 
     public ArrayList<ForwardPath> getForwardPaths () throws MyException;
 

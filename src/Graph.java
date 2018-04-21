@@ -37,14 +37,25 @@ public class Graph {
             throw new MyException("add repeated node");
     }
 
-    public void addArrow (Arrow arrow) throws MyException {
+    public void addArrow (Arrow arrow) {
         if (!arrows.contains(arrow)) {
             arrows.add(arrow);
-        } else
-            throw new MyException("add repeated arrow");
+        } else {
+            for (int i = 0 ; i < arrows.size() ; i++) {
+                if (compareArrows(arrow, arrows.get(i))) {
+                    arrows.get(i).setGain(arrows.get(i).getGain() + arrow.getGain());
+                }
+            }
+        }
     }
 
+        private boolean compareArrows (Arrow arrow1, Arrow arrow2) {
+            return compareTwoNodes(arrow1.getStartNode(),arrow2.getStartNode()) &&
+                    compareTwoNodes(arrow1.getEndNode(), arrow2.getEndNode());
+        }
+
     public void finish () throws MyException {
+
         findForwardPaths();
         findLoops();
         findUnTouchedLoops();
@@ -79,9 +90,9 @@ public class Graph {
                     stackArrow.add(arrows.get(i));
                     forwardPath.addArrow(arrows.get(i));
                     sourceNode = stackNode.peek();
-                    nodesVisited.put(sourceNode,true);
+                    nodesVisited.put(sourceNode, true);
 
-                    if (compareTwoNodes(sourceNode,getSinkNode())) {
+                    if (compareTwoNodes(sourceNode, getSinkNode())) {
 
                         ForwardPath real = new ForwardPath(forwardPath);
                         forwardPaths.add(real);
@@ -91,7 +102,7 @@ public class Graph {
                         stackNode.pop();
                         forwardPath.removeArrow(stackArrow.pop());
                         sourceNode = stackNode.peek();
-                        nodesVisited.put(sourceNode,true);
+                        nodesVisited.put(sourceNode, true);
 
                     } else {
                         i = 0;

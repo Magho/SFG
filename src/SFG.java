@@ -20,21 +20,56 @@ public class SFG implements ISFG {
     @Override
     public void addArrow(Node startNode, Node endNode, int gain) throws MyException {
         if (!finished) {
-            Arrow arrow = new Arrow(startNode, endNode, gain);
-            graph.addArrow(arrow);
+            if (graph.getNodes().contains(startNode) && graph.getNodes().contains(endNode)) {
+                Arrow arrow = new Arrow(startNode, endNode, gain);
+                graph.addArrow(arrow);
+            } else
+                throw new MyException("add arrow between two non added nodes");
         } else
             throw new MyException("add arrow after finish");
     }
 
     @Override
-    public void finish() {
+    public void finish() throws MyException {
 
-        graph.finish();
+        if (graph.getNodes().size() != 0) {
 
-        this.loops = graph.getLoops();
-        this.untouchedLoops = graph.getUntouchedLoops();
-        this.forwardPaths = graph.getForwardPaths();
-        this.finished = true;
+            if (!checkDisconnectedGraph())
+                throw new MyException("the graph is disconnected");
+
+            graph.finish();
+
+            this.loops = graph.getLoops();
+            this.untouchedLoops = graph.getUntouchedLoops();
+            this.forwardPaths = graph.getForwardPaths();
+            this.finished = true;
+        } else
+            throw new MyException("call finish without adding any node");
+    }
+
+        private boolean checkDisconnectedGraph () {
+            for (int i = 0 ; i < graph.getNodes().size() ; i++) {
+                Node node = graph.getNodes().get(i);
+                boolean found = false;
+                for (int j = 0 ; j < graph.getArrows().size() ; j++) {
+                    Arrow arrow = graph.getArrows().get(j);
+                    if (compareTwoNodes(node, arrow.getStartNode()) | compareTwoNodes(node, arrow.getEndNode())) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+            private boolean compareTwoNodes (Node node1 , Node node2) {
+        if (node1.getName().compareTo(node2.getName()) == 0)
+            return true;
+        else
+            return false;
     }
 
     @Override
@@ -106,6 +141,7 @@ public class SFG implements ISFG {
             ArrayList <Loop> tempLoops = new ArrayList<>();
             ArrayList <UntouchedLoop> tempUnTouchedLoops;
 
+            // get loops unTouched with the forwardPath
             for (int i = 0  ; i < loops.size() ; i++) {
                 ArrayList <Arrow> loopArrows = loops.get(i).getArrows();
                 boolean flagAdd = true;
@@ -126,7 +162,7 @@ public class SFG implements ISFG {
                 if (flagAdd)
                     tempLoops.add(loops.get(i));
             }
-
+            //get unTouchedLoops from the loops unTouched with the forwardPath
             tempUnTouchedLoops = findUnTouchedLoops(tempLoops);
             return calculateGeneralDelta(tempLoops, tempUnTouchedLoops);
 
