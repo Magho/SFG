@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class Graph {
 
@@ -32,71 +29,80 @@ public class Graph {
         return untouchedLoops;
     }
 
-
-    public void addForwardPath (ForwardPath forwardPath) {
-        forwardPaths.add(forwardPath);
-    }
-    public void addLoops (Loop loop) {
-        loops.add(loop);
-    }
-    public void addUnTouchedLoops (UntouchedLoop untouchedLoop) {
-        untouchedLoops.add(untouchedLoop);
-    }
     public void addNode (Node node) {
         nodes.add(node);
     }
+
     public void addArrow (Arrow arrow) {
         arrows.add(arrow);
     }
 
     public void finish (){
-        findForwardPathes();
+        findForwardPaths();
         findLoops();
         findUnTouchedLoops();
     }
 
-    //TODO revise
-    private void findForwardPathes () {
+    private void findForwardPaths () {
 
         Node sourceNode = getSourceNode();
         Map <Node, Boolean> nodesVisited = new HashMap<>();
-
         for (int i = 0 ; i < nodes.size() ; i++) {
-            nodesVisited.put(nodes.get(i), false);
+             nodesVisited.put(nodes.get(i), false);
         }
 
         Stack <Node> stackNode = new Stack<>();
         stackNode.add(sourceNode);
+        nodesVisited.put(sourceNode,true);
         Stack <Arrow> stackArrow = new Stack<>();
         ForwardPath forwardPath = new ForwardPath();
 
         while (!stackNode.empty()) {
-            for (int i = 0 ; i < arrows.size() ; i++) {
-                Node endNode = arrows.get(i).getEndNode();
-                Node currentNode;
-                Arrow currentArrow = stackArrow.peek();
 
-                if (compareArrowStartNodeWithNode(arrows.get(i),sourceNode) && nodesVisited.get(endNode)) {
+            for (int i = 0 ; i < arrows.size() ; i++) {
+
+                Node endNode = arrows.get(i).getEndNode();
+
+                if (compareArrowStartNodeWithNode(arrows.get(i),sourceNode) &&
+                        nodesVisited.get(endNode) &&
+                        !compareTwoNodes(sourceNode, endNode)) {
 
                     nodesVisited.put(endNode,true);
                     stackNode.add(endNode);
                     stackArrow.add(arrows.get(i));
-                    currentNode = stackNode.peek();
-                    forwardPath.addArrow(currentArrow);
+                    forwardPath.addArrow(arrows.get(i));
+                    sourceNode = stackNode.peek();
+                    nodesVisited.put(sourceNode,true);
 
-                    if (compareTwoNodes(currentNode,getSinkNode())) {
-                        forwardPaths.add(forwardPath);
-                        forwardPath.removeArrow(currentArrow);
+                    if (compareTwoNodes(sourceNode,getSinkNode())) {
+
+                        ForwardPath real = new ForwardPath(forwardPath);
+                        forwardPaths.add(real);
+                        nodesVisited.put(sourceNode, false);
+                        stackNode.pop();
+                        forwardPath.removeArrow(stackArrow.pop());
+                        stackNode.pop();
+                        forwardPath.removeArrow(stackArrow.pop());
+                        sourceNode = stackNode.peek();
+                        nodesVisited.put(sourceNode,true);
+
+                    } else {
+                        i = 0;
                     }
+
                 } else {
-
-                    forwardPath.removeArrow(currentArrow);
-
+                    //just case node was visited before and all other conditions satisfied
+                    if (!compareTwoNodes(sourceNode, endNode) &&
+                            compareArrowStartNodeWithNode(arrows.get(i),sourceNode)) {
+                        nodesVisited.put(endNode, false);
+                    }
                 }
-                currentNode = stackNode.pop();
-                stackArrow.pop();
-                sourceNode = currentNode;
             }
+
+            stackNode.pop();
+            forwardPath.removeArrow(stackArrow.pop());
+            sourceNode = stackNode.peek();
+            nodesVisited.put(sourceNode,true);
         }
     }
 

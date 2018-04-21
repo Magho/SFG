@@ -2,6 +2,17 @@ import java.util.ArrayList;
 
 public class ForwardPath {
 
+
+    ForwardPath (){
+
+    }
+
+    ForwardPath (ForwardPath forwardPath) {
+        for (int i = 0 ; i < forwardPath.getForwardPath().size() ; i++) {
+            this.addArrow(forwardPath.getForwardPath().get(i));
+        }
+    }
+
     private ArrayList <Arrow> forwardPath = new ArrayList<>();
     private int gain = 1;
 
