@@ -18,6 +18,7 @@
     <StackPane fx:id="stackPane"   prefWidth="600" prefHeight="500">
         <Canvas fx:id="mainCanvas" translateX="300" translateY="250" width="600" height="500" />
         <Canvas fx:id="subCanvas" translateX="300" translateY="30" height="60" width="600"  />
+        <Canvas fx:id="solution" translateX="-300" translateY="250" width="200" height="500" />
     </StackPane>
 
 

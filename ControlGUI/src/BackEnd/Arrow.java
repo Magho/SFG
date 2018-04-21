@@ -1,5 +1,4 @@
 package BackEnd;
-
 public class Arrow {
 
     Arrow (Node startNode, Node endNode, int gain){
@@ -23,5 +22,8 @@ public class Arrow {
 
     public int getGain() {
         return gain;
+    }
+    public void setGain(int gain) {
+        this.gain = gain;
     }
 }

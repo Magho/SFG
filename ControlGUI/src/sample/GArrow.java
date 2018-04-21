@@ -13,6 +13,7 @@ public class GArrow {
     private double midy;
 
     public GArrow() {
+
     }
 
     public GArrow(Arrow arrow, double slope, double midx, double midy) {
@@ -21,6 +22,7 @@ public class GArrow {
         this.midx = midx;
         this.midy = midy;
     }
+
 
     public Color getLineColor() {
         return lineColor;
