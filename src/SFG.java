@@ -5,13 +5,12 @@ public class SFG implements ISFG {
     boolean finished = false;
     private Graph graph = new Graph();
     private ArrayList <Loop> loops ;
-    private ArrayList <UntouchedLoop> untouchedLoops ;
+    public ArrayList <ArrayList <Loop> > AllUnTouchedLoops = new ArrayList<>();
     private ArrayList <ForwardPath> forwardPaths ;
 
     @Override
-    public void addNode(String name) throws MyException {
+    public void addNode(Node node) throws MyException {
         if (!finished) {
-            Node node = new Node(name);
             graph.addNode(node);
         } else
             throw new MyException("add node after finish");
@@ -40,7 +39,7 @@ public class SFG implements ISFG {
             graph.finish();
 
             this.loops = graph.getLoops();
-            this.untouchedLoops = graph.getUntouchedLoops();
+            this.AllUnTouchedLoops = graph.getUntouchedLoops();
             this.finished = true;
 
         } else
@@ -73,13 +72,13 @@ public class SFG implements ISFG {
     }
 
     @Override
-    public ArrayList<ForwardPath> getForwardPaths(Node sinkNode, Node sourceNode) throws MyException {
+    public ArrayList<ForwardPath> getForwardPaths(Node sourceNode, Node sinkNode) throws MyException {
 
         if (!finished) {
             throw new MyException("not finished entering info yet");
-        } else if (!checkIfSink(sinkNode) | !checkIfSource(sourceNode)) {
-            throw new MyException("can't find forward path between non sink and non source node");
-        } else {
+        } /*else if (!checkIfSource(sourceNode)) {
+            throw new MyException("can't find forward path between non sink and non source node");}*/
+        else {
 
             graph.setSinkNode(sinkNode);
             graph.setSourceNode(sourceNode);
@@ -100,12 +99,12 @@ public class SFG implements ISFG {
     }
 
     @Override
-    public ArrayList<UntouchedLoop> getUnTouchedLoops() throws MyException {
+    public ArrayList <ArrayList <Loop> >  getUnTouchedLoops() throws MyException {
 
         if (!finished) {
             throw new MyException("not finished entering info yet");
         } else {
-            return untouchedLoops;
+            return AllUnTouchedLoops;
         }
     }
 
@@ -123,23 +122,23 @@ public class SFG implements ISFG {
 
         float overAllGain ;
 
-        if (checkIfSource(denominator) && checkIfSink(numerator)) {
-            graph.setSinkNode(numerator);
-            graph.setSourceNode(denominator);
+        if (checkIfSource(numerator) && checkIfSink(denominator)) {
+            graph.setSinkNode(denominator);
+            graph.setSourceNode(numerator);
 
             graph.findForwardPaths();
             forwardPaths = graph.getForwardPaths();
             overAllGain = calcOverAllTransferFunction();
 
-        } else if (checkIfSource(denominator) && !checkIfSink(numerator)) {
+        } else if (checkIfSource(numerator) && !checkIfSink(denominator)) {
 
             //handel numerator
-            Node node = new Node((numerator.getName() + "'"));
+            Node node = new Node((denominator.getName() + "'"));
             graph.addNode(node);
-            Arrow arrow = new Arrow(numerator, node,1);
+            Arrow arrow = new Arrow(denominator, node,1);
             graph.addArrow(arrow);
             graph.setSinkNode(node);
-            graph.setSourceNode(denominator);
+            graph.setSourceNode(numerator);
 
             //calculate T.F
             graph.findForwardPaths();
@@ -150,19 +149,19 @@ public class SFG implements ISFG {
             graph.removeArrow(arrow);
             graph.removeNode(node);
 
-        } else if (!checkIfSource(denominator) && checkIfSink(numerator)) {
+        } else if (!checkIfSource(numerator) && checkIfSink(denominator)) {
 
             float overAllGain1 = 0;
             float overAllGain2 = 0;
 
             //handel denominator
-            Node nodeSink = new Node ((denominator.getName() + "\'"));
-            Node nodeSource = new Node ((denominator.getName() + "\'\'"));
+            Node nodeSink = new Node ((numerator.getName() + "\'"));
+            Node nodeSource = new Node ((numerator.getName() + "\'\'"));
             graph.addNode(nodeSink);
             graph.addNode(nodeSource);
 
-            Arrow arrowSink = new Arrow(denominator, nodeSink,1);
-            Arrow arrowSource = new Arrow(nodeSource, denominator,1);
+            Arrow arrowSink = new Arrow(numerator, nodeSink,1);
+            Arrow arrowSource = new Arrow(nodeSource, numerator,1);
             graph.addArrow(arrowSink);
             graph.addArrow(arrowSource);
 
@@ -197,19 +196,19 @@ public class SFG implements ISFG {
             float overAllGain2 = 0;
 
             //handel numerator
-            Node node = new Node((numerator.getName() + "'"));
+            Node node = new Node((denominator.getName() + "'"));
             graph.addNode(node);
-            Arrow arrow = new Arrow(numerator, node,1);
+            Arrow arrow = new Arrow(denominator, node,1);
             graph.addArrow(arrow);
 
             //handel denominator
-            Node nodeSink = new Node ((denominator.getName() + "\'"));
-            Node nodeSource = new Node ((denominator.getName() + "\'\'"));
+            Node nodeSink = new Node ((numerator.getName() + "\'"));
+            Node nodeSource = new Node ((numerator.getName() + "\'\'"));
             graph.addNode(nodeSink);
             graph.addNode(nodeSource);
 
-            Arrow arrowSink = new Arrow(denominator, nodeSink,1);
-            Arrow arrowSource = new Arrow(nodeSource, denominator,1);
+            Arrow arrowSink = new Arrow(numerator, nodeSink,1);
+            Arrow arrowSource = new Arrow(nodeSource, numerator,1);
             graph.addArrow(arrowSink);
             graph.addArrow(arrowSource);
 
@@ -267,21 +266,26 @@ public class SFG implements ISFG {
 
             for (int i = 0 ; i < forwardPaths.size() ; i++) {
                 float temp = forwardPaths.get(i).getGain() * calculateDeltaForSpecificForwardPath(forwardPaths.get(i))
-                        / calculateGeneralDelta(loops, untouchedLoops);
+                        / calculateGeneralDelta(loops, AllUnTouchedLoops);
                 overAllGain = overAllGain + temp ;
             }
 
             return overAllGain;
         }
 
-            private float  calculateGeneralDelta (ArrayList<Loop> localLoops, ArrayList <UntouchedLoop> localUnTouchedLoops) {
+            private float  calculateGeneralDelta (ArrayList<Loop> localLoops, ArrayList <ArrayList <Loop> > localUnTouchedLoops) {
 
                 float gain = 1;
                 for (int i = 0 ; i < localLoops.size(); i++) {
                     gain = gain - localLoops.get(i).getGain();
                 }
+
                 for (int i = 0 ; i < localUnTouchedLoops.size(); i++) {
-                    gain = gain + localUnTouchedLoops.get(i).getGain();
+                    float loopListGain = 1;
+                    for (int j = 0 ; j < localUnTouchedLoops.get(i).size(); j++) {
+                        loopListGain = loopListGain * localUnTouchedLoops.get(i).get(j).getGain();
+                    }
+                    gain = (float) (gain + Math.pow(-1,localUnTouchedLoops.get(i).size()) * loopListGain);
                 }
                 return gain;
             }
@@ -290,7 +294,7 @@ public class SFG implements ISFG {
 
                 ArrayList <Arrow> forwardPathArrows = forwardPath.getArrows();
                 ArrayList <Loop> tempLoops = new ArrayList<>();
-                ArrayList <UntouchedLoop> tempUnTouchedLoops;
+                ArrayList <ArrayList <Loop> > tempUnTouchedLoops = new ArrayList<>();
 
                 // get loops unTouched with the forwardPath
                 for (int i = 0  ; i < loops.size() ; i++) {
@@ -314,47 +318,11 @@ public class SFG implements ISFG {
                         tempLoops.add(loops.get(i));
                 }
                 //get unTouchedLoops from the loops unTouched with the forwardPath
-                tempUnTouchedLoops = findUnTouchedLoops(tempLoops);
+                graph.FindUntouchedLoops1(tempLoops,tempUnTouchedLoops);
                 return calculateGeneralDelta(tempLoops, tempUnTouchedLoops);
             }
 
-            private ArrayList <UntouchedLoop>  findUnTouchedLoops (ArrayList <Loop> localLoops) {
-
-                ArrayList <UntouchedLoop> tempUnTouchedLoops = new ArrayList<>();
-
-                for (int i = 0  ; i < localLoops.size() ; i++) {
-                    ArrayList <Arrow> loop1Arrows = localLoops.get(i).getArrows();
-
-                    for (int l = i + 1  ; l < localLoops.size() ; l++) {
-                        ArrayList <Arrow> loop2Arrows = localLoops.get(i).getArrows();
-                        boolean flagAdd = true;
-
-                        for (int j = 0; j < loop1Arrows.size(); j++) {
-                            boolean flagBreak = false;
-
-                            for (int k = 0; k < loop2Arrows.size(); k++) {
-                                if (compareArrows(loop1Arrows.get(j), loop2Arrows.get(k))) {
-                                    flagBreak = true;
-                                    break;
-                                }
-                            }
-                            if (flagBreak) {
-                                flagAdd = false;
-                                break;
-                            }
-                        }
-
-                        if (flagAdd) {
-                            UntouchedLoop loop = new UntouchedLoop(localLoops.get(i), localLoops.get(l));
-                            tempUnTouchedLoops.add(loop);
-                        }
-                    }
-                }
-
-            return tempUnTouchedLoops;
-            }
-
-                private boolean compareArrows (Arrow arrow1 , Arrow arrow2) {
+            private boolean compareArrows (Arrow arrow1 , Arrow arrow2) {
                     if (arrow1.getStartNode().getName().compareTo(arrow2.getStartNode().getName()) == 0)
                         return true;
                     else
