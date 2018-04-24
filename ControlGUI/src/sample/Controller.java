@@ -25,9 +25,13 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class Controller {
-    public Controller(){
+
+
+    public Controller() {
 
     }
+
+
     @FXML
     private Canvas mainCanvas;
     @FXML
@@ -36,7 +40,8 @@ public class Controller {
     private StackPane stackPane;
     @FXML
     private Canvas solution;
-    private double selfLoopRadius =20;
+
+    private double selfLoopRadius = 20;
     private double maxHeightOfCurve = 15;
     private boolean waitForAction = false;
     private ISFG backEnd;
@@ -53,8 +58,11 @@ public class Controller {
     private LinkedList<GArrow> arrows;
     private boolean inSolution = false;
     private Icon current;
-
+    private int solutionCounter = 0;
+private  boolean clearing;
+private boolean firstAndLastSelected;
     public void initialize() {
+
         arrows = new LinkedList<>();
         selected = new LinkedList<>();
         gNodes = new LinkedList<>();
@@ -73,6 +81,7 @@ public class Controller {
     }
 
     private void setSubCanvasMovement() {
+
         subCanvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -129,12 +138,18 @@ public class Controller {
     }
 
     private void setIconToContext(GraphicsContext context, Icon i, String name) {
+        context.setStroke(Color.BLACK);
         context.setTextAlign(TextAlignment.CENTER);
-        context.strokeText(name,i.getX()+i.getW()/2,i.getY()-5);
+        context.strokeText(name, i.getX() + i.getW() / 2, i.getY() - 5);
         context.drawImage(i.getImage(), i.getX(), i.getY(), i.getH(), i.getW());
         icons.put(name, i);
-    }
+        setSquareOnIcon(i);
 
+    }
+private void setSquareOnIcon(Icon current){
+    subCanvas.getGraphicsContext2D().setStroke(Color.grayRgb(100, .7));
+    subCanvas.getGraphicsContext2D().strokeRect(current.getX(), current.getY(), current.getW(), current.getH());
+}
     private void setSubCanvasClickHandler() {
         subCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -146,13 +161,24 @@ public class Controller {
                                 inSolution = true;
                                 solution.setTranslateX(10 - solution.getWidth() / 2);
                                 try {
-                                    solution.getGraphicsContext2D().strokeText("choose 2 nodes", solution.getWidth() / 2, solution.getHeight() / 2);
+                                    writeSolutionMessage("choose 2 nodes");
 
                                 } catch (Exception e) {
                                     System.out.println(e.toString());
                                 }
 
                             } else {
+                                if(clearing){
+
+                                    arrows = new LinkedList<>();
+                                    selected = new LinkedList<>();
+                                    gNodes = new LinkedList<>();
+                                    backEnd = new SFG();
+                                 mainCanvas.getGraphicsContext2D().clearRect(0,0,mainCanvas.getWidth(),mainCanvas.getHeight());
+                                 writeSolutionMessage("");
+                                 firstAndLastSelected=false;
+                                 clearing=false;
+                                }
                                 solution.setTranslateX(-solution.getWidth() / 2);
                                 inSolution = false;
                             }
@@ -173,7 +199,7 @@ public class Controller {
     }
 
     private void eventOfiSolver(MouseEvent e) {
-        if ((waitForAction && selected.size() == 0) || selected.size() == 2) {
+        if (((waitForAction && selected.size() == 0) || selected.size() == 2)&&!firstAndLastSelected) {
             return;
         }
         for (int i = 0; i < gNodes.size(); i++) {
@@ -186,9 +212,9 @@ public class Controller {
             }
         }
         if (selected.size() == 2) {
+            firstAndLastSelected=true;
             //TODO try {
-                showSolution();
-
+            showSolution();
             for (int i = 0; i < selected.size(); i++) {
                 selected.get(i).setColor(chosenForNodes);
                 drawGNode(selected.get(i), mainCanvas.getGraphicsContext2D());
@@ -200,99 +226,151 @@ public class Controller {
 
     }
 
+    private void writeSolutionMessage(String s) {
+        StringBuilder lenChecker = new StringBuilder(s);
+        int counter=0;
+        for(int i=0;i<lenChecker.length();i++){
+            counter++;
+            if(lenChecker.charAt(i)=='\n'){
+                counter=0;
+            }else if(counter==25){
+                lenChecker.insert(i,'\n');
+                counter=0;
+            }
+        }
+        s=lenChecker.toString();
+        solution.getGraphicsContext2D().clearRect(0, 0, solution.getWidth(), solution.getHeight());
+        solution.getGraphicsContext2D().setFill(Color.grayRgb(100, .7));
+        solution.getGraphicsContext2D().fillRect(0, 0, solution.getWidth(), solution.getHeight());
+        solution.getGraphicsContext2D().setStroke(Color.LIGHTGREEN);
+        double h = solution.getHeight();
+        solution.getGraphicsContext2D().setTextAlign(TextAlignment.CENTER);
+        solution.getGraphicsContext2D().strokeText(s, solution.getWidth() / 2, 20);
+    }
+    private void writeDownSolutionMessage(String s){
+        StringBuilder lenChecker = new StringBuilder(s);
+        int counter=0;
+        for(int i=0;i<lenChecker.length();i++){
+            counter++;
+            if(lenChecker.charAt(i)=='\n'){
+                counter=0;
+            }else if(counter==25){
+                lenChecker.insert(i,'\n');
+                counter=0;
+            }
+        }
+        s= lenChecker.toString();
+        solution.getGraphicsContext2D().setStroke(Color.ORANGE);
+        solution.getGraphicsContext2D().strokeText(s,solution.getWidth()/2,solution.getHeight()-40);
+    }
     private void showSolution() {
         try {
-            System.out.println(selected.get(0).getNode().getName() + "   " + selected.get(1).getNode().getName());
             backEnd.finish();
             ArrayList<ForwardPath> forwardPaths = backEnd.getForwardPaths(selected.get(0).getNode(), selected.get(1).getNode());
             ArrayList<Loop> loops = backEnd.getLoops();
             ArrayList<ArrayList<Loop>> untouchedLoops = backEnd.getUnTouchedLoops();
             float tf = backEnd.getOverAllTransferFunction(selected.get(0).getNode(), selected.get(1).getNode());
-
-            solution.getGraphicsContext2D().clearRect(0, 0, solution.getWidth(), solution.getHeight());
-            solution.getGraphicsContext2D().setFill(Color.grayRgb(100, .7));
-            solution.getGraphicsContext2D().fillRect(0, 0, solution.getWidth(), solution.getHeight());
-            solution.getGraphicsContext2D().setStroke(Color.RED);
-            double h = solution.getHeight();
-            solution.getGraphicsContext2D().setTextAlign(TextAlignment.CENTER);
+            clearBackEnd();
             printForwardPathes(forwardPaths);
-            printLoops(loops);
-            printUnTouchedLoops(untouchedLoops);
-            printTF(tf);
+            writeDownSolutionMessage("CLICK ANY WHERE TO SHOW LOOPS");
+            solutionCounter++;
+            solution.setOnMouseClicked(e -> {
+                switch (solutionCounter % 4) {
+                    case 0:
+                        printForwardPathes(forwardPaths);
+                        writeDownSolutionMessage("CLICK ANY WHERE TO SHOW LOOPS");
+                        break;
+                    case 1:
+                        printLoops(loops);
+                        writeDownSolutionMessage("CLICK ANY WHERE TO SHOW UNTOUCHED LOOPS");
+
+                        break;
+                    case 2:
+                        printUnTouchedLoops(untouchedLoops);
+                        writeDownSolutionMessage("CLICK ANY WHERE TO SHOW TRANSFER FUNCTION");
+
+                        break;
+                    case 3:
+                        printTF(tf);
+                        writeDownSolutionMessage("CLICK ANY WHERE TO SHOW FORWARD PATHES");
+
+                        break;
+                    default:
+                        writeSolutionMessage("Error functions not found");
+                        break;
+                }
+                solutionCounter++;
+            });
+
 
         } catch (Exception ee) {
-            throw new RuntimeException(ee);
-            // System.out.println(ee.toString()+"\n"+ee.fillInStackTrace());
-            //TODO
+            //throw new RuntimeException(ee);
+            writeSolutionMessage("Error");
         }
     }
 
+    private void clearBackEnd() {
+        backEnd = new SFG();
+        clearing=true;
+    }
+
     private void printForwardPathes(ArrayList<ForwardPath> forwardPaths) {
-        solution.getGraphicsContext2D().strokeText("Forward Pathes", solution.getWidth() / 2, 20);
+        StringBuilder pathes = new StringBuilder();
+        pathes.append("\"FORWARD PATHES\"\n\n");
         for (int i = 0; i < forwardPaths.size(); i++) {
             ArrayList<Arrow> arrows = forwardPaths.get(i).getArrows();
             StringBuilder path = new StringBuilder();
             for (int j = 0; j < arrows.size(); j++) {
-                System.out.print(arrows.get(i).getStartNode().getName() + "->");
-                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
-
+                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() - 1 ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
             }
             System.out.println();
-
-            solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 40 + i * 150 / forwardPaths.size());
+            pathes.append(String.valueOf(i + 1) + ":" + path + "\n");
         }
-
+        writeSolutionMessage(pathes.toString());
 
     }
 
     private void printLoops(ArrayList<Loop> loops) {
-
-        solution.getGraphicsContext2D().strokeText("Loops", solution.getWidth() / 2, 200);
+        StringBuilder loopsStr = new StringBuilder();
+        loopsStr.append("\"LOOPS\"\n\n");
         for (int i = 0; i < loops.size(); i++) {
             ArrayList<Arrow> arrows = loops.get(i).getArrows();
             StringBuilder path = new StringBuilder();
             for (int j = 0; j < arrows.size(); j++) {
-                System.out.print(arrows.get(j).getStartNode().getName() + "->");
-                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
+                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() - 1 ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
             }
-            solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 220 + i * 150 / loops.size());
-            System.out.println();
+            loopsStr.append(i + ":" + path + "\n");
         }
+        writeSolutionMessage(loopsStr.toString());
 
     }
 
-    private void printUnTouchedLoops(ArrayList<UntouchedLoop> untouchedLoops) {
+    private String getLoopStr(Loop l) {
+        ArrayList<Arrow> arrows = l.getArrows();
+        StringBuilder path = new StringBuilder();
+        for (int j = 0; j < arrows.size(); j++) {
+            path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() - 1 ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
+        }
+        return path.toString();
+    }
 
-        solution.getGraphicsContext2D().strokeText("UnTouched loops", solution.getWidth() / 2, 370);
+    private void printUnTouchedLoops(ArrayList<ArrayList<Loop>> untouchedLoops) {
+        StringBuilder uTLS = new StringBuilder();
+        uTLS.append("\"UNTOUCHED LOOPS\" \n\n");
         for (int i = 0; i < untouchedLoops.size(); i++) {
-            Loop l1 = untouchedLoops.get(i).getLoop1();
-            ArrayList<Arrow> arrows = l1.getArrows();
-            StringBuilder path = new StringBuilder();
-            for (int j = 0; j < arrows.size(); j++) {
-                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
+            for (int j = 0; j < untouchedLoops.get(i).size(); j++) {
+                uTLS.append(getLoopStr(untouchedLoops.get(i).get(j)) + "\n");
             }
-            path.append("||");
-            solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 380 + (i / 2) * 100 / untouchedLoops.size());
-
-            Loop l2 = untouchedLoops.get(i).getLoop2();
-            arrows = l2.getArrows();
-            path = new StringBuilder();
-
-            for (int j = 0; j < arrows.size(); j++) {
-                path.append(arrows.get(j).getStartNode().getName() + (j == arrows.size() ? ("->" + arrows.get(j).getEndNode().getName()) : "->"));
-            }
-            path.append("\n---------------------");
-            solution.getGraphicsContext2D().strokeText(path.toString(), solution.getWidth() / 2, 380 + (i / 2) * 100 / untouchedLoops.size());
+            uTLS.append("\n------------\n");
 
         }
+        writeSolutionMessage(uTLS.toString());
 
     }
 
     private void printTF(float tf) {
-        solution.getGraphicsContext2D().strokeText("OverAll T.F", solution.getWidth() / 2, 490);
-        solution.getGraphicsContext2D().strokeText(String.valueOf(tf), solution.getWidth() / 2, 400);
-        System.out.println(tf);
 
+        writeSolutionMessage("\"TRANSFERE FUNCTION\"\n\n" + String.valueOf(tf));
     }
 
     private void eventOfiConnection(MouseEvent e) {
@@ -309,6 +387,17 @@ public class Controller {
             }
         }
         if (selected.size() == 2) {
+            for (int i = 0; i < arrows.size(); i++) {
+                if (selected.get(0).getNode() == arrows.get(i).getFirst().getNode() && selected.get(1).getNode() == arrows.get(i).getSecond().getNode()) {
+                    for (int j = 0; j < selected.size(); j++) {
+                        selected.get(j).setColor(chosenForNodes);
+                        drawGNode(selected.get(j), mainCanvas.getGraphicsContext2D());
+                    }
+                    selected = new LinkedList<>();
+                    waitForAction = false;
+                    return;
+                }
+            }
             double midX, midY;
             GArrow gArrow = new GArrow();
 
@@ -322,13 +411,13 @@ public class Controller {
                 gArrow.setSecond(selected.get(1));
                 gArrow.setCurveHeight(0);
                 mainCanvas.getGraphicsContext2D().strokeArc(selected.get(0).getX() - r, selected.get(0).getY() - 2 * r, 2 * r, 2 * r, 0, 360, ArcType.OPEN);
-                drawArrow(gArrow, gArrow.getMidx() + 10, gArrow.getMidy()+10, mainCanvas.getGraphicsContext2D());
+                drawArrow(gArrow, gArrow.getMidx() + 10, gArrow.getMidy() + 10, mainCanvas.getGraphicsContext2D());
             } else {
                 midX = selected.get(0).getX() + ((selected.get(1).getX() - selected.get(0).getX()) / 2);
                 midY = selected.get(0).getY() + ((selected.get(1).getY() - selected.get(0).getY()) / 2);
 
                 boolean isCurve = false;
-                isCurve=checkIfCurve();
+                isCurve = checkIfCurve();
 
                 if (!isCurve) {
                     mainCanvas.getGraphicsContext2D().strokeLine(selected.get(0).getX(), selected.get(0).getY(), selected.get(1).getX(), selected.get(1).getY());
@@ -347,7 +436,7 @@ public class Controller {
                     gArrow.setFirst(selected.get(0));
                     gArrow.setSecond(selected.get(1));
                     gArrow.setCurveHeight((float) maxHeightOfCurve);
-                    drawArrow(gArrow, selected.get(1).getX(), selected.get(1).getY(), mainCanvas.getGraphicsContext2D());
+                    drawArrow(gArrow, selected.get(1).getX(), selected.get(1).getY() - maxHeightOfCurve, mainCanvas.getGraphicsContext2D());
 
                 }
             }
@@ -360,13 +449,13 @@ public class Controller {
                 if (e1.getCode().isWhitespaceKey()) {
                     if (validGain(textField.getText())) {
                         try {
-                            
+
                             gArrow.setArrow(backEnd.addArrow(selected.get(0).node, selected.get(1).node, Integer.valueOf(textField.getText())));
                         } catch (Exception exe) {
                             //TODO
                         }
                         stackPane.getChildren().remove(textField);
-                        mainCanvas.getGraphicsContext2D().strokeText(textField.getText(), gArrow.getMidx(), gArrow.getMidy() - 10);
+                        mainCanvas.getGraphicsContext2D().strokeText(textField.getText(), gArrow.getMidx()+Math.cos(gArrow.getSlope())*15, gArrow.getMidy() - Math.sin(gArrow.getSlope())*15);
                         arrows.add(gArrow);
                         for (int i = 0; i < selected.size(); i++) {
                             selected.get(i).setColor(chosenForNodes);
@@ -384,31 +473,33 @@ public class Controller {
     }
 
     private boolean checkIfCurve() {
-        int counter=0;
+        int counter = 0;
 
-        for(int i=0;i<gNodes.size();i++){
-            double xi,xs1,xs2;
-            xi=gNodes.get(i).getX();
-            xs1=selected.get(0).getX();
-            xs2=selected.get(1).getX();
-            if((xi>xs1&&xi<xs2)||(xi<xs1&&xi>xs2)){
+        for (int i = 0; i < gNodes.size(); i++) {
+            double xi, xs1, xs2;
+            xi = gNodes.get(i).getX();
+            xs1 = selected.get(0).getX();
+            xs2 = selected.get(1).getX();
+            double y1 = selected.get(0).getY();
+            double y2 = selected.get(1).getY();
+            if (((xi > xs1 && xi < xs2) || (xi < xs1 && xi > xs2)) && Math.abs(gNodes.get(i).getY() - (y1 + y2) / 2) < maxHeightOfCurve + 10) {
                 counter++;
             }
 
         }
-        for(int i=0;i<arrows.size();i++){
-            if(arrows.get(i).getFirst()==selected.get(1)&&arrows.get(i).getSecond()==selected.get(0)){
-                maxHeightOfCurve=arrows.get(i).getCurveHeight()+counter*10+10;
-                if(selected.get(0).getX()>selected.get(1).getX()){
-                    maxHeightOfCurve+=20;
+        for (int i = 0; i < arrows.size(); i++) {
+            if (arrows.get(i).getFirst() == selected.get(1) && arrows.get(i).getSecond() == selected.get(0)) {
+                maxHeightOfCurve = arrows.get(i).getCurveHeight() + counter * 10 + 10;
+                if (selected.get(0).getX() > selected.get(1).getX()) {
+                    maxHeightOfCurve += 45;
                 }
                 return true;
             }
         }
-        if(counter>0){
-            maxHeightOfCurve = counter*25;
-            if(selected.get(0).getX()>selected.get(1).getX()){
-                maxHeightOfCurve+=20;
+        if (counter > 0) {
+            maxHeightOfCurve = counter * 25;
+            if (selected.get(0).getX() > selected.get(1).getX()) {
+                maxHeightOfCurve += 20;
             }
             return true;
         }
@@ -432,28 +523,27 @@ public class Controller {
         double dx = gArrow.getMidx() - dirx;
         double theta;
 
-            theta = Math.atan(Math.abs(dy) / Math.abs(dx));
-            theta = Math.toDegrees(theta);
+        theta = Math.atan(Math.abs(dy) / Math.abs(dx));
+        theta = Math.toDegrees(theta);
 
-            if (dy < 0 && dx < 0) {
-                theta = 180 - theta;
+        if (dy < 0 && dx < 0) {
+            theta = 180 - theta;
 
-            } else if (dx > 0 && dy > 0) {
-                theta = 360 - theta;
+        } else if (dx > 0 && dy > 0) {
+            theta = 360 - theta;
 
-            } else if (dy < 0 && dx > 0) {
-                theta = theta;
+        } else if (dy < 0 && dx > 0) {
+            theta = theta;
 
-            } else if (dx < 0 && dy > 0) {
-                theta = 180 + theta;
+        } else if (dx < 0 && dy > 0) {
+            theta = 180 + theta;
 
-            }
-         dy = gArrow.getFirst().getY() - diry;
-         dx = gArrow.getFirst().getX() - dirx;
-            if (dx == 0) {
-                theta = (dy > 0 ? 270 : 90);
-            }else
-        if (dy == 0) {
+        }
+        dy = gArrow.getFirst().getY() - diry;
+        dx = gArrow.getFirst().getX() - dirx;
+        if (dx == 0) {
+            theta = (dy > 0 ? 270 : 90);
+        } else if (dy == 0) {
             theta = (dx > 0 ? 0 : 180);
         }
         gArrow.setSlope(theta);
@@ -498,9 +588,9 @@ public class Controller {
         context.strokeArc(cX - r, cY - r, 2 * r, 2 * r, ss, 2 * (90 - ss + slope), ArcType.OPEN);
 
         double arrX, arrY, term, dD;
-        if(slope2==90){
-            return new PosXY(xm,ym-maxHeightOfCurve)
-           ;
+        if (slope2 == 90) {
+            return new PosXY(xm, ym - maxHeightOfCurve)
+                    ;
         }
         term = 2 * (-ym + cY);
         dD = (cY - ym) / (cX - xm);
@@ -535,7 +625,8 @@ public class Controller {
                 if (validNodeName(textField.getText())) {
                     waitForAction = false;
                     try {
-                        Node bNode = backEnd.addNode(textField.getText().trim());
+                        Node bNode = new Node(textField.getText().trim());
+                        backEnd.addNode(bNode);
                         node1.setNode(bNode);
                     } catch (Exception exe) {
                         //TODO

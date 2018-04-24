@@ -5,7 +5,7 @@ public interface ISFG {
 
     public void addNode(Node node) throws MyException;
 
-    public void addArrow(Node startNode, Node endNode, int gain) throws MyException;
+    public Arrow addArrow(Node startNode, Node endNode, int gain) throws MyException;
 
     public void finish () throws MyException;
 

@@ -19,11 +19,12 @@ public class SFG implements ISFG {
     }
 
     @Override
-    public void addArrow(Node startNode, Node endNode, int gain) throws MyException {
+    public Arrow addArrow(Node startNode, Node endNode, int gain) throws MyException {
         if (!finished) {
             if (graph.getNodes().contains(startNode) && graph.getNodes().contains(endNode)) {
                 Arrow arrow = new Arrow(startNode, endNode, gain);
                 graph.addArrow(arrow);
+                return arrow;
             } else
                 throw new MyException("add arrow between two non added nodes");
         } else

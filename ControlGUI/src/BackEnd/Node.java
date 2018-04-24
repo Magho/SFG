@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Node {
 
-    Node (String name){
+    public Node (String name){
         this.name = name;
     }
 
