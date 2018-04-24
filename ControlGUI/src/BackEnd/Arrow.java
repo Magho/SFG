@@ -1,4 +1,5 @@
 package BackEnd;
+
 public class Arrow {
 
     Arrow (Node startNode, Node endNode, int gain){

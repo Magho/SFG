@@ -206,7 +206,7 @@ public class Controller {
             backEnd.finish();
             ArrayList<ForwardPath> forwardPaths = backEnd.getForwardPaths(selected.get(0).getNode(), selected.get(1).getNode());
             ArrayList<Loop> loops = backEnd.getLoops();
-            ArrayList<ArrayList<Loop>> untouchedLoops = backEnd.getUnTouchedLoops();
+            ArrayList<UntouchedLoop> untouchedLoops = backEnd.getUnTouchedLoops();
             float tf = backEnd.getOverAllTransferFunction(selected.get(0).getNode(), selected.get(1).getNode());
 
             solution.getGraphicsContext2D().clearRect(0, 0, solution.getWidth(), solution.getHeight());
@@ -360,7 +360,6 @@ public class Controller {
                 if (e1.getCode().isWhitespaceKey()) {
                     if (validGain(textField.getText())) {
                         try {
-                            
                             gArrow.setArrow(backEnd.addArrow(selected.get(0).node, selected.get(1).node, Integer.valueOf(textField.getText())));
                         } catch (Exception exe) {
                             //TODO

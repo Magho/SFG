@@ -23,4 +23,9 @@ public class UntouchedLoop {
         return loop2;
     }
 
+    public void print () {
+        loop1.print();
+        loop2.print();
+    }
+
 }
