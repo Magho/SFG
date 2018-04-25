@@ -1,5 +1,4 @@
 package BackEnd;
-
 import java.util.*;
 
 public class Graph {
@@ -258,7 +257,7 @@ public class Graph {
                         nodesVisited.put(endNode, false);
                 }
 
-                stackNode.pop();
+                stackNode.pop().clearVisitedNodes();
                 if (!stackArrow.empty())
                     loop.removeArrow(stackArrow.pop());
 

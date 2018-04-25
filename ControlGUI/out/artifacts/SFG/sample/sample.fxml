@@ -1,0 +1,28 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TextField?>
+<BorderPane
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="500" prefWidth="600"
+>
+    <!--fx:controller="sample.Controller"-->
+    <StackPane fx:id="stackPane"   prefWidth="600" prefHeight="500">
+        <Canvas fx:id="mainCanvas" translateX="300" translateY="250" width="600" height="500" />
+        <Canvas fx:id="subCanvas" translateX="300" translateY="30" height="60" width="600"  />
+        <Canvas fx:id="solution" translateX="-300" translateY="250" width="200" height="500" />
+    </StackPane>
+
+
+
+
+
+</BorderPane>
