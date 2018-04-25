@@ -41,7 +41,7 @@ public class Controller {
     @FXML
     private Canvas solution;
 
-    private double selfLoopRadius = 20;
+    private double selfLoopRadius = 13;
     private double maxHeightOfCurve = 15;
     private boolean waitForAction = false;
     private ISFG backEnd;
@@ -265,12 +265,12 @@ private void setSquareOnIcon(Icon current){
     }
     private void showSolution() {
         try {
+            clearBackEnd();
             backEnd.finish();
             ArrayList<ForwardPath> forwardPaths = backEnd.getForwardPaths(selected.get(0).getNode(), selected.get(1).getNode());
             ArrayList<Loop> loops = backEnd.getLoops();
             ArrayList<ArrayList<Loop>> untouchedLoops = backEnd.getUnTouchedLoops();
             float tf = backEnd.getOverAllTransferFunction(selected.get(0).getNode(), selected.get(1).getNode());
-            clearBackEnd();
             printForwardPathes(forwardPaths);
             writeDownSolutionMessage("CLICK ANY WHERE TO SHOW LOOPS");
             solutionCounter++;
@@ -310,7 +310,6 @@ private void setSquareOnIcon(Icon current){
     }
 
     private void clearBackEnd() {
-        backEnd = new SFG();
         clearing=true;
     }
 
@@ -411,7 +410,7 @@ private void setSquareOnIcon(Icon current){
                 gArrow.setSecond(selected.get(1));
                 gArrow.setCurveHeight(0);
                 mainCanvas.getGraphicsContext2D().strokeArc(selected.get(0).getX() - r, selected.get(0).getY() - 2 * r, 2 * r, 2 * r, 0, 360, ArcType.OPEN);
-                drawArrow(gArrow, gArrow.getMidx() + 10, gArrow.getMidy() + 10, mainCanvas.getGraphicsContext2D());
+                drawArrow(gArrow, selected.get(0).getX()+r , selected.get(0).getY()-2*r-3, mainCanvas.getGraphicsContext2D());
             } else {
                 midX = selected.get(0).getX() + ((selected.get(1).getX() - selected.get(0).getX()) / 2);
                 midY = selected.get(0).getY() + ((selected.get(1).getY() - selected.get(0).getY()) / 2);
@@ -455,7 +454,8 @@ private void setSquareOnIcon(Icon current){
                             //TODO
                         }
                         stackPane.getChildren().remove(textField);
-                        mainCanvas.getGraphicsContext2D().strokeText(textField.getText(), gArrow.getMidx()+Math.cos(gArrow.getSlope())*15, gArrow.getMidy() - Math.sin(gArrow.getSlope())*15);
+                        System.out.println(gArrow.getSlope()+"--------------");
+                        mainCanvas.getGraphicsContext2D().strokeText(textField.getText(), gArrow.getMidx()+Math.cos(90-gArrow.getSlope()%90)*20, gArrow.getMidy() + Math.sin(90-gArrow.getSlope()%90)*20);
                         arrows.add(gArrow);
                         for (int i = 0; i < selected.size(); i++) {
                             selected.get(i).setColor(chosenForNodes);
@@ -464,7 +464,7 @@ private void setSquareOnIcon(Icon current){
                         selected = new LinkedList<>();
                         waitForAction = false;
                     } else {
-                        textField.setText("unvalid");
+                        textField.setText("invalid");
                     }
                 }
             });
