@@ -295,14 +295,14 @@ public class Graph {
                 if (loop1.getArrows().size() != loop2.getArrows().size()) {
                     repeated  = false;
                 } else {
-                    for (int i = 0 ; i < loop1.getNodes().size() ; i++) {
-                        if (!loop2.getNodes().contains(loop1.getNodes().get(i))) {
+                    for (int i = 0 ; i < loop1.getArrows().size() ; i++) {
+                        if (!loop2.getArrows().contains(loop1.getArrows().get(i))) {
                             repeated =  false;
                             break;
                         }
                     } if (repeated) {
-                        for (int i = 0; i < loop2.getNodes().size(); i++) {
-                            if (!loop1.getNodes().contains(loop2.getNodes().get(i))) {
+                        for (int i = 0; i < loop2.getArrows().size(); i++) {
+                            if (!loop1.getArrows().contains(loop2.getArrows().get(i))) {
                                 repeated =  false;
                                 break;
                             }
