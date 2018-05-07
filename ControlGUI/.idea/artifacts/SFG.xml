@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" name="SFG">
+  <artifact type="javafx" build-on-make="true" name="SFG">
     <output-path>$PROJECT_DIR$/out/artifacts/SFG</output-path>
     <properties id="javafx-properties">
       <options>
@@ -14,6 +14,9 @@
     <root id="root">
       <element id="archive" name="ControlGUI.jar">
         <element id="module-output" name="ControlGUI" />
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/src/sample/META-INF/MANIFEST.MF" />
+        </element>
       </element>
     </root>
   </artifact>

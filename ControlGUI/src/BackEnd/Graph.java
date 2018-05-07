@@ -1,4 +1,6 @@
 package BackEnd;
+
+
 import java.util.*;
 
 public class Graph {
@@ -78,10 +80,10 @@ public class Graph {
             arrows.remove(arrow);
         }
     }
-        private boolean compareArrows (Arrow arrow1, Arrow arrow2) {
-            return compareTwoNodes(arrow1.getStartNode(),arrow2.getStartNode()) &&
-                    compareTwoNodes(arrow1.getEndNode(), arrow2.getEndNode());
-        }
+    private boolean compareArrows (Arrow arrow1, Arrow arrow2) {
+        return compareTwoNodes(arrow1.getStartNode(),arrow2.getStartNode()) &&
+                compareTwoNodes(arrow1.getEndNode(), arrow2.getEndNode());
+    }
 
 
 
@@ -96,7 +98,7 @@ public class Graph {
         Node sourceNode = getSourceNode();
         Map <Node, Boolean> nodesVisited = new HashMap<>();
         for (int i = 0 ; i < nodes.size() ; i++) {
-             nodesVisited.put(nodes.get(i), false);
+            nodesVisited.put(nodes.get(i), false);
         }
 
         Stack <Node> stackNode = new Stack<>();
@@ -118,7 +120,9 @@ public class Graph {
                 if (compareArrowStartNodeWithNode(arrows.get(i),sourceNode) &&
                         !nodesVisited.get(endNode) &&
                         !compareTwoNodes(sourceNode, endNode)) {
-
+                    if (stackNode.contains(endNode)) {
+                        continue;
+                    }
                     nodesVisited.put(endNode,true);
                     stackNode.add(endNode);
                     sourceNode.addVisitedNode(endNode);
@@ -159,19 +163,19 @@ public class Graph {
         removeRepeatedForwardPaths();
     }
 
-        private void removeRepeatedForwardPaths () {
-            for (int i = 0 ; i < forwardPaths.size() ; i++) {
-                ForwardPath forwardPath1 = forwardPaths.get(i);
-                for (int j = i+1 ; j < forwardPaths.size() ; j++) {
-                    ForwardPath forwardPath2 = forwardPaths.get(j);
-                    if (compareTwoForwardPaths (forwardPath1, forwardPath2) ) {
-                        forwardPaths.remove(forwardPath2);
-                        j--;
-                    }
+    private void removeRepeatedForwardPaths () {
+        for (int i = 0 ; i < forwardPaths.size() ; i++) {
+            ForwardPath forwardPath1 = forwardPaths.get(i);
+            for (int j = i+1 ; j < forwardPaths.size() ; j++) {
+                ForwardPath forwardPath2 = forwardPaths.get(j);
+                if (compareTwoForwardPaths (forwardPath1, forwardPath2) ) {
+                    forwardPaths.remove(forwardPath2);
+                    j--;
                 }
             }
         }
-        private boolean compareTwoForwardPaths (ForwardPath forwardPath1 , ForwardPath forwardPath2) {
+    }
+    private boolean compareTwoForwardPaths (ForwardPath forwardPath1 , ForwardPath forwardPath2) {
         boolean repeated = true;
         if (forwardPath1.getArrows().size() != forwardPath2.getArrows().size()) {
             repeated  = false;
@@ -193,12 +197,12 @@ public class Graph {
 
         return repeated;
     }
-        private Node getSourceNode () {
-            return sourceNode;
-        }
-        private Node getSinkNode () {
-            return sinkNode;
-        }
+    private Node getSourceNode () {
+        return sourceNode;
+    }
+    private Node getSinkNode () {
+        return sinkNode;
+    }
 
     private void findLoops () throws MyException {
 
@@ -274,46 +278,46 @@ public class Graph {
     }
 
 
-        private void clearVisitedNodes () {
-            for (int i = 0 ; i < nodes.size() ; i++) {
-                nodes.get(i).clearVisitedNodes();
+    private void clearVisitedNodes () {
+        for (int i = 0 ; i < nodes.size() ; i++) {
+            nodes.get(i).clearVisitedNodes();
+        }
+    }
+    private void removeRepeatedLoops () {
+        for (int i = 0 ; i < loops.size() ; i++) {
+            Loop loop1 = loops.get(i);
+            for (int j = i + 1 ; j < loops.size() ; j++) {
+                Loop loop2 = loops.get(j);
+                if (compareTwoLoops (loop1, loop2) ) {
+                    loops.remove(loop2);
+                    j--;
+                }
             }
         }
-        private void removeRepeatedLoops () {
-            for (int i = 0 ; i < loops.size() ; i++) {
-                Loop loop1 = loops.get(i);
-                for (int j = i + 1 ; j < loops.size() ; j++) {
-                    Loop loop2 = loops.get(j);
-                    if (compareTwoLoops (loop1, loop2) ) {
-                        loops.remove(loop2);
-                        j--;
+    }
+    private boolean compareTwoLoops (Loop loop1 , Loop loop2) {
+        boolean repeated = true;
+        if (loop1.getArrows().size() != loop2.getArrows().size()) {
+            repeated  = false;
+        } else {
+            for (int i = 0 ; i < loop1.getArrows().size() ; i++) {
+                if (!loop2.getArrows().contains(loop1.getArrows().get(i))) {
+                    repeated =  false;
+                    break;
+                }
+            } if (repeated) {
+                for (int i = 0; i < loop2.getArrows().size(); i++) {
+                    if (!loop1.getArrows().contains(loop2.getArrows().get(i))) {
+                        repeated =  false;
+                        break;
                     }
                 }
             }
         }
-        private boolean compareTwoLoops (Loop loop1 , Loop loop2) {
-            boolean repeated = true;
-                if (loop1.getArrows().size() != loop2.getArrows().size()) {
-                    repeated  = false;
-                } else {
-                    for (int i = 0 ; i < loop1.getNodes().size() ; i++) {
-                        if (!loop2.getNodes().contains(loop1.getNodes().get(i))) {
-                            repeated =  false;
-                            break;
-                        }
-                    } if (repeated) {
-                        for (int i = 0; i < loop2.getNodes().size(); i++) {
-                            if (!loop1.getNodes().contains(loop2.getNodes().get(i))) {
-                                repeated =  false;
-                                break;
-                            }
-                        }
-                    }
-                }
 
-            return repeated;
-        }
-        private void findSelfLoops() throws MyException {
+        return repeated;
+    }
+    private void findSelfLoops() throws MyException {
         for (int i = 0 ; i < arrows.size() ; i++) {
             if (compareTwoNodes(arrows.get(i).getStartNode(), arrows.get(i).getEndNode())) {
                 Loop real = new Loop();
@@ -322,13 +326,13 @@ public class Graph {
             }
         }
     }
-        private boolean compareArrowStartNodeWithNode (Arrow arrow1 , Node node) {
+    private boolean compareArrowStartNodeWithNode (Arrow arrow1 , Node node) {
         if (arrow1.getStartNode().getName().compareTo(node.getName()) == 0)
             return true;
         else
             return false;
     }
-        private boolean compareTwoNodes (Node node1 , Node node2) {
+    private boolean compareTwoNodes (Node node1 , Node node2) {
         if (node1.getName().compareTo(node2.getName()) == 0)
             return true;
         else

@@ -2,35 +2,73 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fd7b1e68-5246-48c6-ab27-e7177843fc8e" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/.idea/artifacts/SFG.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/.idea/artifacts/SFG.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ControlGUI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/Arrow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/ForwardPath.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/Graph.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/ISFG.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/Loop.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/MyException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/Node.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/SFG.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/BackEnd/UntouchedLoop.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/GArrow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/GArrow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/GNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/GNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/Icon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Icon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/src/sample/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/PosXY.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/PosXY.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/connection.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/connection.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/node.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/node.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/sample.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/solutions.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/solutions.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ControlGUI/src/sample/solver.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/solver.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ForwardPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ForwardPath.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Graph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ISFG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ISFG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Loop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Loop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SFG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SFG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UntouchedLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UntouchedLoop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/Arrow.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/ForwardPath.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/Graph.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/ISFG.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/Loop.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/MyException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/Node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/SFG.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/UntouchedLoop.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/BackEnd/test.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/ControlGUI.jar" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/ControlGUI.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/Controller$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/Controller$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/Controller$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/Controller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/GArrow.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/GNode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/Icon.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/PosXY.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/connection.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/node.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/sample.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/solutions.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/artifacts/SFG/sample/solver.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/Arrow.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/Arrow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/ForwardPath.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/ForwardPath.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/Graph.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/Graph.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/ISFG.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/ISFG.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/Loop.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/Loop.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/MyException.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/MyException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/SFG.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/SFG.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/UntouchedLoop.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/UntouchedLoop.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/test.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/BackEnd/test.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Controller$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Controller$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Controller$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Controller$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Controller$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Controller$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Controller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/GArrow.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/GArrow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/GNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/GNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Icon.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Icon.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/PosXY.class" beforeDir="false" afterPath="$PROJECT_DIR$/ControlGUI/out/production/ControlGUI/sample/PosXY.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Arrow.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ForwardPath.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Graph.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ISFG.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Loop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MyException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SFG.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UntouchedLoop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/GArrow.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/GNode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/Icon.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/PosXY.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/connection.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/node.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/sample.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/solutions.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sample/solver.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test.java" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -40,13 +78,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -65,7 +97,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -84,6 +115,7 @@
       </pane>
       <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -159,7 +191,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -168,8 +199,8 @@
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
@@ -178,33 +209,27 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Messages" order="7" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Messages" order="7" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Graph.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/ControlGUI/src/sample/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/ControlGUI/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -219,9 +244,6 @@
           <caret line="12" column="2" lean-forward="true" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

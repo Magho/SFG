@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="ControlGUI/src"/>
+	<classpathentry kind="lib" path="ControlGUI/out/artifacts/SFG/ControlGUI.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="ControlGUI/out/production/ControlGUI"/>
+</classpath>
